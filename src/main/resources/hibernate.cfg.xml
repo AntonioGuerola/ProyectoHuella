@@ -15,5 +15,13 @@
       <property name="hibernate.show_sql">true</property>
       <property name="hibernate.format_sql">true</property>
       <property name="hibernate.hbm2ddl.auto">update</property>
+
+      <mapping class="org.example.model.Actividad"/>
+      <mapping class="org.example.model.Categoria"/>
+      <mapping class="org.example.model.Habito"/>
+      <mapping class="org.example.model.HabitoId"/>
+      <mapping class="org.example.model.Huella"/>
+      <mapping class="org.example.model.Recomendacion"/>
+      <mapping class="org.example.model.Usuario"/>
   </session-factory>
 </hibernate-configuration>
