@@ -1,9 +1,13 @@
 module org.example {
+    requires java.naming;
     requires javafx.controls;
     requires javafx.fxml;
     requires jakarta.persistence;
     requires org.hibernate.orm.core;
+    requires java.desktop;
 
-    opens org.example to javafx.fxml;
+    opens org.example.views to javafx.fxml;
     exports org.example;
+
+    opens org.example.model.entities to org.hibernate.orm.core;
 }

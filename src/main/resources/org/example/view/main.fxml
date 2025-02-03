@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="900.0"
+            xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.views.mainController"
+            stylesheets="@../styles/mainStyle.css">
+
+    <center>
+        <AnchorPane prefHeight="600.0" prefWidth="900.0">
+            <VBox spacing="15.0" alignment="CENTER" layoutX="350.0" layoutY="250.0" prefWidth="200.0">
+                <Button fx:id="btnLogin" onAction="#toLogIn" text="Iniciar sesión"/>
+                <Button fx:id="btnRegister" onAction="#toRegister" text="Registrarse"/>
+                <Button fx:id="btnClose" onAction="#close" text="Cerrar"/>
+            </VBox>
+        </AnchorPane>
+    </center>
+
+</BorderPane>

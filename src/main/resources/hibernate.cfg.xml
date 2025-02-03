@@ -16,12 +16,12 @@
       <property name="hibernate.format_sql">true</property>
       <property name="hibernate.hbm2ddl.auto">update</property>
 
-      <mapping class="org.example.model.Actividad"/>
-      <mapping class="org.example.model.Categoria"/>
-      <mapping class="org.example.model.Habito"/>
-      <mapping class="org.example.model.HabitoId"/>
-      <mapping class="org.example.model.Huella"/>
-      <mapping class="org.example.model.Recomendacion"/>
-      <mapping class="org.example.model.Usuario"/>
+      <mapping class="org.example.model.entities.Actividad"/>
+      <mapping class="org.example.model.entities.Categoria"/>
+      <mapping class="org.example.model.entities.Habito"/>
+      <mapping class="org.example.model.entities.HabitoId"/>
+      <mapping class="org.example.model.entities.Huella"/>
+      <mapping class="org.example.model.entities.Recomendacion"/>
+      <mapping class="org.example.model.entities.Usuario"/>
   </session-factory>
 </hibernate-configuration>
