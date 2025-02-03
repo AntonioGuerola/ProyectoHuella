@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.example.views.AppController;
+import org.example.views.Scenes;
+import org.example.views.View;
 
 import java.io.IOException;
 
@@ -12,13 +15,21 @@ import java.io.IOException;
  * JavaFX App
  */
 public class App extends Application {
-
-    private static Scene scene;
+    public static Scene scene;
+    public static AppController currentController;
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        View view = AppController.loadFXML(Scenes.ROOT);
+        scene = new Scene(view.scene, 900, 600);
+        currentController = (AppController) view.controller;
+        currentController.onOpen(null);
+        stage.setTitle("HuellaCarbono");
         stage.setScene(scene);
+        stage.setMinHeight(600);
+        stage.setMinWidth(900);
+        stage.setMaxHeight(600);
+        stage.setMaxWidth(900);
         stage.show();
     }
 

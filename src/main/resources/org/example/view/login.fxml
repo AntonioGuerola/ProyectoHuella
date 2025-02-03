@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="900.0"
+            xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.views.loginController"
+            stylesheets="@../styles/loginStyle.css">
+    <center>
+        <AnchorPane prefHeight="600.0" prefWidth="900.0">
+            <VBox spacing="15.0" alignment="CENTER" layoutX="300.0" layoutY="200.0" prefWidth="300.0">
+
+                <Label text="Email:"/>
+                <TextField fx:id="emailText" promptText="Ingrese su email"/>
+
+                <Label text="Contraseña:"/>
+                <PasswordField fx:id="passwordText" promptText="Ingrese su contraseña"/>
+
+                <HBox spacing="10.0" alignment="CENTER">
+                    <Button fx:id="btnLogin" text="Iniciar Sesión" onAction="#login"/>
+                    <Button fx:id="btnBack" text="Volver" onAction="#goBack"/>
+                </HBox>
+            </VBox>
+        </AnchorPane>
+    </center>
+</BorderPane>

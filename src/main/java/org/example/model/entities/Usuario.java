@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.model.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -33,6 +33,13 @@ public class Usuario {
 
     @OneToMany(mappedBy = "idUsuario")
     private List<Huella> huellas = new ArrayList<>();
+
+    public Usuario(String nombre, String email, String contraseña){
+
+    }
+
+    public Usuario() {
+    }
 
     public Integer getId() {
         return id;
