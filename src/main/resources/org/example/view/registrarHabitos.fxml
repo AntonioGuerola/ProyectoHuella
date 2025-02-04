@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="900.0"
+            xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.views.registrarHabitosController"
+            stylesheets="@../styles/registrarHabitosStyle.css">
+
+    <center>
+        <VBox alignment="CENTER" spacing="20.0">
+            <children>
+                <Label style="-fx-font-size: 16px;" text="Actividad:" />
+                <ChoiceBox fx:id="choiceBoxActividades" prefWidth="350.0" />
+            </children>
+            <children>
+                <Button fx:id="btnClose" onAction="#goBack" text="Volver"/>
+            </children>
+        </VBox>
+    </center>
+
+</BorderPane>
