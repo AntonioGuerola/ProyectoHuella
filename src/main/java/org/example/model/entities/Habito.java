@@ -2,6 +2,7 @@ package org.example.model.entities;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 
 @Entity
@@ -29,6 +30,17 @@ public class Habito {
 
     @Column(name = "ultima_fecha")
     private Instant ultimaFecha;
+
+    public Habito(Usuario idUsuario, Actividad idActividad, int frecuencia, String tipo, Instant ultimaFecha){
+        this.idUsuario = idUsuario;
+        this.idActividad = idActividad;
+        this.frecuencia = frecuencia;
+        this.tipo = tipo;
+        this.ultimaFecha = ultimaFecha;
+    }
+
+    public Habito() {
+    }
 
     public HabitoId getId() {
         return id;

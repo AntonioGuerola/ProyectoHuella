@@ -61,7 +61,7 @@ public class loginController extends Controller implements Initializable {
                     userSingleton.getInstance(userFromDataBase);
                     System.out.println("Logueado correctamente");
                     result = true;
-                    App.currentController.changeScene(Scenes.INICIO, null);
+                    App.currentController.changeScene(Scenes.MENUPRINCIPAL, null);
                 } else {
                     JavaFXUtils.showErrorAlert("ERROR AL INICIAR SESIÓN", "Contraseña incorrecta");
                 }

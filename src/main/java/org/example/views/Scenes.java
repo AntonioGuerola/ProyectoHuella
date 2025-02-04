@@ -3,8 +3,10 @@ package org.example.views;
 public enum Scenes {
     ROOT("view/layout.fxml"),
     REGISTRAR("view/signin.fxml"),
-    INICIO("view/main.fxml"),
-    INICIARSESION("view/login.fxml"),;
+    INICIO("view/start.fxml"),
+    INICIARSESION("view/login.fxml"),
+    MENUPRINCIPAL("view/main.fxml"),
+    REGISTRARHABITOS("view/registrarHabitos.fxml");
 
     private String url;
 

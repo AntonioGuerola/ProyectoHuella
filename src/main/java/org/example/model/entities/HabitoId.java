@@ -15,6 +15,9 @@ public class HabitoId implements java.io.Serializable {
     @Column(name = "id_actividad", nullable = false)
     private Integer idActividad;
 
+    public HabitoId(int idUsuario, int idActividad) {
+    }
+
     public Integer getIdUsuario() {
         return idUsuario;
     }

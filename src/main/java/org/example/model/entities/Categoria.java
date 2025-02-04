@@ -29,6 +29,16 @@ public class Categoria {
     @OneToMany(mappedBy = "idCategoria")
     private List<Recomendacion> recomendacions = new ArrayList<>();
 
+    public Categoria(int id, String nombre, BigDecimal factorEmision, String unidad){
+        this.id = id;
+        this.nombre = nombre;
+        this.factorEmision = factorEmision;
+        this.unidad = unidad;
+    }
+
+    public Categoria() {
+    }
+
     public Integer getId() {
         return id;
     }

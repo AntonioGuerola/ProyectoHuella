@@ -25,6 +25,15 @@ public class Actividad {
     @OneToMany(mappedBy = "idActividad")
     private List<Huella> huellas = new ArrayList<>();
 
+    public Actividad(int id, String nombre, Categoria idCategoria){
+        this.id = id;
+        this.nombre = nombre;
+        this.idCategoria = idCategoria;
+    }
+
+    public Actividad() {
+    }
+
     public Integer getId() {
         return id;
     }
