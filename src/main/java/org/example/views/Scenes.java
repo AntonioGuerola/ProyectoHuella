@@ -2,9 +2,9 @@ package org.example.views;
 
 public enum Scenes {
     ROOT("view/layout.fxml"),
-    INICIARSESION("view/signin.fxml"),
+    REGISTRAR("view/signin.fxml"),
     INICIO("view/main.fxml"),
-    REGISTRAR("view/login.fxml"),;
+    INICIARSESION("view/login.fxml"),;
 
     private String url;
 
