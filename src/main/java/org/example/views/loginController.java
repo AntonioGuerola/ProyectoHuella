@@ -37,7 +37,7 @@ public class loginController extends Controller implements Initializable {
     }
 
     @FXML
-    public boolean login() throws NoSuchAlgorithmException, SQLException {
+    public boolean login() throws NoSuchAlgorithmException, SQLException, IOException {
         boolean result = false;
 
         if (emailText.getText().isEmpty() && passwordText.getText().isEmpty()) {
@@ -59,7 +59,9 @@ public class loginController extends Controller implements Initializable {
             if (userFromDataBase.getEmail().equals(userToLogin.getEmail())) {
                 if (userFromDataBase.getContraseña() != null && userFromDataBase.getContraseña().equals(userToLogin.getContraseña())) {
                     userSingleton.getInstance(userFromDataBase);
+                    System.out.println("Logueado correctamente");
                     result = true;
+                    App.currentController.changeScene(Scenes.INICIO, null);
                 } else {
                     JavaFXUtils.showErrorAlert("ERROR AL INICIAR SESIÓN", "Contraseña incorrecta");
                 }

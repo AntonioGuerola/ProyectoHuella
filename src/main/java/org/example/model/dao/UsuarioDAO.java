@@ -10,11 +10,11 @@ import java.util.List;
 
 public class UsuarioDAO implements DAO<Usuario, Integer>{
     private static String INSERT =" INSERT INTO usuario (nombre, email, contraseña) VALUES (?,?,?)";
-    private static String UPDATE = "UPDATE usuario SET nombre = ?, email = ?, contraseña = ? WHERE id=? ";
-    private static String FINDBYID = "SELECT x.id, x.nombre, x.email FROM usuario AS x WHERE x.id=?";
-    private static String FINDUSERBYEMAIL = "SELECT x.id, x.nombre, x.email FROM usuario AS x WHERE x.email = ?";
-    private static String FINDALLUSER = "SELECT x.id, x.nombre, x.email FROM usuario AS x";
-    private static String DELETE = "DELETE FROM usuario WHERE id = ?";
+    private static String UPDATE = "UPDATE usuario SET nombre = ?, email = ?, contraseña = ? WHERE id_usuario=? ";
+    private static String FINDBYID = "SELECT x.id_usuario, x.nombre, x.email FROM usuario AS x WHERE x.id_usuario=?";
+    private static String FINDUSERBYEMAIL = "SELECT x.id_usuario, x.nombre, x.email, x.contraseña FROM usuario AS x WHERE x.email = ?";
+    private static String FINDALLUSER = "SELECT x.id_usuario, x.nombre, x.email FROM usuario AS x";
+    private static String DELETE = "DELETE FROM usuario WHERE id_usuario = ?";
 
     private final Connection con;
 
@@ -26,6 +26,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer>{
     public Usuario save(Usuario entity) throws SQLException {
         Usuario result = entity;
         if (entity == null) return result;
+
         if (entity.getId() == null) {
             try (PreparedStatement pst = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
                 pst.setString(1, entity.getNombre());
@@ -38,16 +39,18 @@ public class UsuarioDAO implements DAO<Usuario, Integer>{
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
+                throw new SQLException("Error al guardar el usuario: " + e.getMessage());
             }
         } else {
             try (PreparedStatement pst = con.prepareStatement(UPDATE)) {
-                pst.setString(1, entity.getNombre() != null ? entity.getNombre() : "");
-                pst.setString(2, entity.getEmail() != null ? entity.getEmail() : "");
-                pst.setString(3, entity.getContraseña() != null ? entity.getContraseña() : "");
+                pst.setString(1, entity.getNombre());
+                pst.setString(2, entity.getEmail());
+                pst.setString(3, entity.getContraseña());
                 pst.setInt(4, entity.getId());
                 pst.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
+                throw new SQLException("Error al actualizar el usuario: " + e.getMessage());
             }
         }
         return result;
@@ -74,7 +77,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer>{
             ResultSet res = pst.executeQuery();
             if (res.next()){
                 result = new Usuario();
-                result.setId(res.getInt("id"));
+                result.setId(res.getInt("id_usuario"));
                 result.setNombre(res.getString("nombre"));
                 result.setEmail(res.getString("email"));
             }
@@ -92,9 +95,10 @@ public class UsuarioDAO implements DAO<Usuario, Integer>{
             ResultSet res = pst.executeQuery();
             if (res.next()){
                 result = new Usuario();
-                result.setId(res.getInt("id"));
+                result.setId(res.getInt("id_usuario"));
                 result.setNombre(res.getString("nombre"));
                 result.setEmail(res.getString("email"));
+                result.setContraseña(res.getString("contraseña"));
             }
             res.close();
         }catch (SQLException e){
@@ -110,7 +114,7 @@ public class UsuarioDAO implements DAO<Usuario, Integer>{
             ResultSet res = pst.executeQuery();
             while (res.next()){
                 Usuario u = new Usuario();
-                u.setId(res.getInt("id"));
+                u.setId(res.getInt("id_usuario"));
                 u.setNombre(res.getString("nombre"));
                 u.setEmail(res.getString("email"));
                 result.add(u);

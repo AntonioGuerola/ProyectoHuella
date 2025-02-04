@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.views.signinController"
+            stylesheets="@../styles/signinStyle.css">
+
+    <center>
+        <AnchorPane prefHeight="600.0" prefWidth="900.0">
+            <VBox spacing="15.0" alignment="CENTER" layoutX="300.0" layoutY="150.0" prefWidth="300.0">
+
+                <Label text="Nombre:"/>
+                <TextField fx:id="nameText" promptText="Ingrese su nombre"/>
+
+                <Label text="Email:"/>
+                <TextField fx:id="emailText" promptText="Ingrese su email"/>
+
+                <Label text="Contraseña:"/>
+                <PasswordField fx:id="passwordText" promptText="Ingrese su contraseña"/>
+
+                <Label text="Confirmar contraseña:"/>
+                <PasswordField fx:id="confirmPasswordText" promptText="Ingrese su contraseña de nuevo"/>
+
+                <HBox spacing="10.0" alignment="CENTER">
+                    <Button fx:id="btnRegister" text="Registrar" onAction="#saveUser"/>
+                    <Button fx:id="btnBack" text="Volver" onAction="#goBack"/>
+                </HBox>
+
+            </VBox>
+        </AnchorPane>
+    </center>
+
+</BorderPane>

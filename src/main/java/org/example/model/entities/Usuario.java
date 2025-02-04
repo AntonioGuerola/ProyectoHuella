@@ -35,7 +35,9 @@ public class Usuario {
     private List<Huella> huellas = new ArrayList<>();
 
     public Usuario(String nombre, String email, String contraseña){
-
+        this.nombre = nombre;
+        this.email = email;
+        this.contraseña = contraseña;
     }
 
     public Usuario() {
@@ -97,4 +99,13 @@ public class Usuario {
         this.huellas = huellas;
     }
 
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", email='" + email + '\'' +
+                ", contraseña='" + contraseña + '\'' +
+                '}';
+    }
 }
