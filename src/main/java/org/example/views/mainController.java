@@ -27,6 +27,10 @@ public class mainController extends Controller implements Initializable {
 
     }
 
+    public void goRegistrarHuella() throws IOException {
+        App.currentController.changeScene(Scenes.REGISTRARHUELLA, null);
+    }
+
     public void goRegistrarHabito() throws IOException {
         App.currentController.changeScene(Scenes.REGISTRARHABITOS, null);
     }

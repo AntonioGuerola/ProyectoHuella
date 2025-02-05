@@ -1,0 +1,76 @@
+/* Estilo base de los botones */
+Button {
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Efecto hover */
+Button:hover {
+    -fx-background-color: #005A9E;
+}
+
+/* Efecto al presionar */
+Button:pressed {
+    -fx-background-color: #003E73;
+}
+
+/* Estilo especial para el botón de volver */
+#btnBack {
+    -fx-background-color: #6c757d;
+}
+
+#btnBack:hover {
+    -fx-background-color: #5a6268;
+}
+
+/* Estilo para los campos de texto y ChoiceBox */
+TextField, ChoiceBox {
+    -fx-pref-height: 35px;
+    -fx-pref-width: 250px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-background-color: #ffffff;
+}
+
+/* Placeholder text */
+TextField:focused {
+    -fx-border-color: #0078D7;
+    -fx-border-width: 2px;
+}
+
+/* Alineación de los elementos dentro del VBox */
+VBox {
+    -fx-alignment: CENTER;
+    -fx-spacing: 15px;
+}
+
+/* Estilo para etiquetas */
+Label {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+/* Estilo para DatePicker */
+DatePicker {
+    -fx-pref-height: 35px;
+    -fx-pref-width: 250px;
+    -fx-font-size: 14px;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-background-color: #ffffff;
+}
+
+DatePicker:focused {
+    -fx-border-color: #0078D7;
+    -fx-border-width: 2px;
+}
+

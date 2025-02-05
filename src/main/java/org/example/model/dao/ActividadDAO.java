@@ -1,119 +1,58 @@
 package org.example.model.dao;
 
-import org.example.model.connection.MySQLConnection;
 import org.example.model.entities.Actividad;
 import org.example.model.entities.Categoria;
-import org.example.model.entities.Usuario;
-
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import org.example.model.singleton.Connect;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import java.util.List;
 
-public class ActividadDAO implements DAO<Actividad, Integer>{
-    private static String FINDBYID = "SELECT x.id_actividad, x.nombre, x.id_categoria FROM actividad AS x WHERE x.id_actividad=?";
-    private static String FINDALL = "SELECT x.id_actividad, x.nombre, x.id_categoria FROM actividad AS x";
-    private static String FINDBYNAME = "SELECT x.id_actividad, x.nombre, x.id_categoria FROM actividad AS x WHERE x.nombre=?";
+public class ActividadDAO implements DAO<Actividad, Integer> {
 
-    private final Connection con;
-
-    public ActividadDAO(Connection con) {
-        this.con = MySQLConnection.getConnection();
-    }
+    private static final String FIND_BY_ID = "FROM Actividad a WHERE a.id = :id";
+    private static final String FIND_ALL = "FROM Actividad";
+    private static final String FIND_BY_NAME = "FROM Actividad a WHERE a.nombre = :nombre";
 
     @Override
-    public Actividad save(Actividad entity) throws SQLException {
+    public Actividad save(Actividad entity) {
         return null;
     }
 
     @Override
-    public Actividad delete(Actividad entity) throws SQLException {
+    public Actividad delete(Actividad entity) {
         return null;
     }
 
     @Override
-    public Actividad findById(Integer key) throws SQLException {
-        Actividad result = null;
-        Categoria categoria = null;
-
-        try (PreparedStatement pst = con.prepareStatement(FINDBYID)) {
-            pst.setInt(1, key);
-            ResultSet res = pst.executeQuery();
-
-            if (res.next()){
-                result = new Actividad();
-                result.setId(res.getInt("id_actividad"));
-                result.setNombre(res.getString("nombre"));
-                int idCategoria = res.getInt("id_categoria");
-                if (!res.wasNull()){
-                    categoria = CategoriaDAO.buildCategoria().findById(idCategoria);
-                }
-                result.setIdCategoria(categoria);
-            }
-            res.close();
-        }catch (SQLException e){
-            e.printStackTrace();
+    public Actividad findById(Integer key) {
+        try (Session session = Connect.getInstance().getSession()) {
+            return session.createQuery(FIND_BY_ID, Actividad.class)
+                    .setParameter("id", key)
+                    .uniqueResult();
         }
-        return result;
     }
 
     @Override
-    public List findAll() throws SQLException {
-        List<Actividad> result = new ArrayList<>();
-        try (PreparedStatement pst = con.prepareStatement(FINDALL)) {
-            ResultSet res = pst.executeQuery();
-            while (res.next()){
-                Actividad a = new Actividad();
-                a.setId(res.getInt("id_actividad"));
-                a.setNombre(res.getString("nombre"));
-                int idCategoria = res.getInt("id_categoria");
-                if (!res.wasNull()){
-                    Categoria cat = CategoriaDAO.buildCategoria().findById(idCategoria);
-                    a.setIdCategoria(cat);
-                }
-                result.add(a);
-            }
-            res.close();
-        }catch (SQLException e){
-            e.printStackTrace();
+    public List<Actividad> findAll() {
+        try (Session session = Connect.getInstance().getSession()) {
+            return session.createQuery(FIND_ALL, Actividad.class).list();
         }
-        return result;
     }
 
-    public Actividad findByName(String key) throws SQLException {
-        Actividad result = null;
-        Categoria categoria = null;
-
-        try (PreparedStatement pst = con.prepareStatement(FINDBYNAME)) {
-            pst.setString(1, key);
-            ResultSet res = pst.executeQuery();
-
-            if (res.next()){
-                result = new Actividad();
-                result.setId(res.getInt("id_actividad"));
-                result.setNombre(res.getString("nombre"));
-                int idCategoria = res.getInt("id_categoria");
-                if (!res.wasNull()){
-                    categoria = CategoriaDAO.buildCategoria().findById(idCategoria);
-                }
-                result.setIdCategoria(categoria);
-            }
-            res.close();
-        }catch (SQLException e){
-            e.printStackTrace();
+    public Actividad findByName(String key) {
+        try (Session session = Connect.getInstance().getSession()) {
+            return session.createQuery(FIND_BY_NAME, Actividad.class)
+                    .setParameter("nombre", key)
+                    .uniqueResult();
         }
-        return result;
     }
 
     @Override
-    public void close() throws IOException {
-
+    public void close() {
+        // No se necesita implementación en Hibernate
     }
 
     public static ActividadDAO buildActividadDAO() {
-        return new ActividadDAO(MySQLConnection.getConnection());
+        return new ActividadDAO();
     }
 }
