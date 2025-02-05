@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/recomendacionesStyle.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.views.recomendacionesController">
+
+    <center>
+        <AnchorPane prefHeight="600.0" prefWidth="900.0">
+            <VBox alignment="CENTER" layoutX="100.0" layoutY="56.0" prefHeight="487.0" prefWidth="700.0" spacing="20.0">
+
+                <TableView fx:id="tablaHuellas" prefWidth="500.0">
+                    <columns>
+                        <TableColumn fx:id="columnaActividad" prefWidth="316.0" text="Actividad" />
+                        <TableColumn fx:id="columnaValor" prefWidth="61.60003662109375" text="Valor" />
+                        <TableColumn fx:id="columnaUnidad" prefWidth="77.79998779296875" text="Unidad" />
+                        <TableColumn fx:id="columnaFecha" prefWidth="179.20001220703125" text="Fecha" />
+                    </columns>
+                </TableView>
+
+                <Label text="Recomendación:" />
+                <TextField fx:id="recomendacionTextField" editable="false" prefWidth="500.0" promptText="Seleccione una huella para ver la recomendación" />
+
+                <HBox alignment="CENTER" spacing="15.0">
+                    <Button fx:id="btnBack" onAction="#goBack" text="Volver" />
+                </HBox>
+            </VBox>
+        </AnchorPane>
+    </center>
+
+</BorderPane>

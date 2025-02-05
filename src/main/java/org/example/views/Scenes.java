@@ -7,7 +7,8 @@ public enum Scenes {
     INICIARSESION("view/login.fxml"),
     MENUPRINCIPAL("view/main.fxml"),
     REGISTRARHUELLA("view/registrarHuella.fxml"),
-    REGISTRARHABITOS("view/registrarHabitos.fxml");
+    REGISTRARHABITOS("view/registrarHabitos.fxml"),
+    RECOMENDACIONES("view/recomendaciones.fxml");
 
     private String url;
 
