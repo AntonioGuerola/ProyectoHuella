@@ -11,6 +11,7 @@ public class UsuarioDAO {
     private static final String FIND_BY_EMAIL = "FROM Usuario u WHERE u.email = :email";
     private static final String FIND_BY_ID = "FROM Usuario u WHERE u.id = :id";
     private static final String FIND_ALL = "FROM Usuario";
+    private static final String FINDHUELLASDEUSUARIO = "SELECT u FROM Usuario u LEFT JOIN FETCH u.huellas WHERE u.id = :userId";
 
     /**
      * Insert a new user in the database.
@@ -87,5 +88,13 @@ public class UsuarioDAO {
 
     public static UsuarioDAO buildUsuarioDAO() {
         return new UsuarioDAO();
+    }
+
+    public Usuario getUsuarioConHuellas(Integer userId) {
+        try (Session session = Connect.getInstance().getSession()) {
+            return session.createQuery(FINDHUELLASDEUSUARIO, Usuario.class)
+                    .setParameter("userId", userId)
+                    .uniqueResult();
+        }
     }
 }

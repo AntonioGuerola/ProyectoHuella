@@ -1,0 +1,100 @@
+/* Estilo base de los botones */
+Button {
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Efecto hover */
+Button:hover {
+    -fx-background-color: #005A9E;
+}
+
+/* Efecto al presionar */
+Button:pressed {
+    -fx-background-color: #003E73;
+}
+
+/* Estilo especial para el botón de volver */
+#btnBack {
+    -fx-background-color: #6c757d;
+}
+
+#btnBack:hover {
+    -fx-background-color: #5a6268;
+}
+
+/* Estilo para los campos de texto y TextField */
+TextField {
+    -fx-pref-height: 35px;
+    -fx-pref-width: 500px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-background-color: #ffffff;
+}
+
+/* Placeholder text */
+TextField:focused {
+    -fx-border-color: #0078D7;
+    -fx-border-width: 2px;
+}
+
+/* Estilo para etiquetas */
+Label {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: #333;
+}
+
+/* Estilo para la tabla (TableView) */
+TableView {
+    -fx-pref-width: 500px;
+    -fx-pref-height: 300px;
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+/* Estilo para las columnas de la tabla */
+TableColumn {
+    -fx-alignment: CENTER;
+}
+
+/* Estilo para las celdas de la tabla */
+TableView .table-cell {
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+}
+
+/* Estilo para el VBox que organiza los elementos */
+VBox {
+    -fx-alignment: CENTER;
+    -fx-spacing: 20px;
+    -fx-padding: 20px;
+}
+
+/* Estilo para el HBox con los botones */
+HBox {
+    -fx-alignment: CENTER;
+    -fx-spacing: 15px;
+}
+
+/* Alineación de los elementos dentro del VBox */
+VBox {
+    -fx-alignment: CENTER;
+    -fx-spacing: 15px;
+}
+
+/* Estilo para el borde del contenedor principal */
+AnchorPane {
+    -fx-background-color: #ffffff;
+}

@@ -3,6 +3,7 @@ package org.example.model.entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 @Entity
 @Table(name = "recomendacion", schema = "eco")
@@ -22,6 +23,15 @@ public class Recomendacion {
 
     @Column(name = "impacto_estimado", nullable = false, precision = 10, scale = 2)
     private BigDecimal impactoEstimado;
+
+    public Recomendacion(Integer id, Categoria idCategoria, BigDecimal impactoEstimado){
+        this.id = id;
+        this.idCategoria = idCategoria;
+        this.impactoEstimado = impactoEstimado;
+    }
+
+    public Recomendacion() {
+    }
 
     public Integer getId() {
         return id;
