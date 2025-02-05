@@ -16,6 +16,7 @@ import java.util.List;
 public class ActividadDAO implements DAO<Actividad, Integer>{
     private static String FINDBYID = "SELECT x.id_actividad, x.nombre, x.id_categoria FROM actividad AS x WHERE x.id_actividad=?";
     private static String FINDALL = "SELECT x.id_actividad, x.nombre, x.id_categoria FROM actividad AS x";
+    private static String FINDBYNAME = "SELECT x.id_actividad, x.nombre, x.id_categoria FROM actividad AS x WHERE x.nombre=?";
 
     private final Connection con;
 
@@ -82,8 +83,37 @@ public class ActividadDAO implements DAO<Actividad, Integer>{
         return result;
     }
 
+    public Actividad findByName(String key) throws SQLException {
+        Actividad result = null;
+        Categoria categoria = null;
+
+        try (PreparedStatement pst = con.prepareStatement(FINDBYNAME)) {
+            pst.setString(1, key);
+            ResultSet res = pst.executeQuery();
+
+            if (res.next()){
+                result = new Actividad();
+                result.setId(res.getInt("id_actividad"));
+                result.setNombre(res.getString("nombre"));
+                int idCategoria = res.getInt("id_categoria");
+                if (!res.wasNull()){
+                    categoria = CategoriaDAO.buildCategoria().findById(idCategoria);
+                }
+                result.setIdCategoria(categoria);
+            }
+            res.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     @Override
     public void close() throws IOException {
 
+    }
+
+    public static ActividadDAO buildActividadDAO() {
+        return new ActividadDAO(MySQLConnection.getConnection());
     }
 }
