@@ -19,6 +19,14 @@ public class JavaFXUtils {
         errorAlert.showAndWait();
     }
 
+    public static void showInfoAlert(String title, String textAboutAlert) {
+        Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+        infoAlert.setTitle(title);
+        infoAlert.setHeaderText(title);
+        infoAlert.setContentText(textAboutAlert);
+        infoAlert.showAndWait();
+    }
+
     private static String bytesToHex(byte[] hash) {
         StringBuilder hexString = new StringBuilder(2 * hash.length);
         for (int i = 0; i < hash.length; i++) {

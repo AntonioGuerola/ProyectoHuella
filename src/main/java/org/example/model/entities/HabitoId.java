@@ -16,6 +16,12 @@ public class HabitoId implements java.io.Serializable {
     private Integer idActividad;
 
     public HabitoId(int idUsuario, int idActividad) {
+        this.idUsuario = idUsuario;
+        this.idActividad = idActividad;
+    }
+
+    public HabitoId() {
+
     }
 
     public Integer getIdUsuario() {

@@ -78,6 +78,7 @@ public class signinController extends Controller implements Initializable {
                         UsuarioDAO.buildUsuario().save(userToRegister);
                         userSingleton.getInstance(userToRegister);
                         result = true;
+                        JavaFXUtils.showInfoAlert("ÉXITO", "Usuario registrado correctamente.");
                         App.currentController.changeScene(Scenes.INICIO, null);
                     }else{
                         JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "Error al registrarse porque este email ya existe");

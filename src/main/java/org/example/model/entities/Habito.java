@@ -24,18 +24,19 @@ public class Habito {
     @Column(name = "frecuencia", nullable = false)
     private Integer frecuencia;
 
-    @Lob
     @Column(name = "tipo", nullable = false)
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    private Tipo tipo;
 
     @Column(name = "ultima_fecha")
     private Instant ultimaFecha;
 
-    public Habito(Usuario idUsuario, Actividad idActividad, int frecuencia, String tipo, Instant ultimaFecha){
+    public Habito(Usuario idUsuario, Actividad idActividad, int frecuencia, Tipo tipo, Instant ultimaFecha) {
+        this.id = new HabitoId(idUsuario.getId(), idActividad.getId());
         this.idUsuario = idUsuario;
         this.idActividad = idActividad;
         this.frecuencia = frecuencia;
-        this.tipo = tipo;
+        this.tipo = tipo != null ? Tipo.valueOf(tipo.name()) : null;
         this.ultimaFecha = ultimaFecha;
     }
 
@@ -75,11 +76,11 @@ public class Habito {
     }
 
     public String getTipo() {
-        return tipo;
+        return tipo != null ? tipo.name() : null;
     }
 
     public void setTipo(String tipo) {
-        this.tipo = tipo;
+        this.tipo = tipo != null ? Tipo.valueOf(tipo) : null;
     }
 
     public Instant getUltimaFecha() {
