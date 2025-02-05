@@ -10,5 +10,5 @@ module org.example {
     opens org.example.views to javafx.fxml;
     exports org.example;
 
-    opens org.example.model.entities to org.hibernate.orm.core;
+    opens org.example.model.entities to org.hibernate.orm.core, javafx.base;
 }
