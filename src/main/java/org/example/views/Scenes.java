@@ -6,6 +6,7 @@ public enum Scenes {
     INICIO("view/start.fxml"),
     INICIARSESION("view/login.fxml"),
     MENUPRINCIPAL("view/main.fxml"),
+    REGISTRARHUELLA("view/registrarHuella.fxml"),
     REGISTRARHABITOS("view/registrarHabitos.fxml");
 
     private String url;

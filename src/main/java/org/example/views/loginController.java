@@ -12,62 +12,56 @@ import org.example.model.utils.JavaFXUtils;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class loginController extends Controller implements Initializable {
+
     @FXML
     public TextField emailText;
 
     @FXML
     public TextField passwordText;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        // Any initialization if needed
     }
 
     @Override
     public void onOpen(Object input) throws IOException {
-
+        // Handle opening logic if necessary
     }
 
     @Override
     public void onClose(Object output) {
-
+        // Handle closing logic if necessary
     }
 
     @FXML
-    public boolean login() throws NoSuchAlgorithmException, SQLException, IOException {
+    public boolean login() throws NoSuchAlgorithmException, IOException {
         boolean result = false;
 
-        if (emailText.getText().isEmpty() && passwordText.getText().isEmpty()) {
+        // Validating input fields
+        if (emailText.getText().isEmpty() || passwordText.getText().isEmpty()) {
             JavaFXUtils.showErrorAlert("ERROR AL INICIAR SESIÓN", "Los campos de email y contraseña no pueden estar vacíos");
             return false;
         }
-        if (emailText.getText().isEmpty()) {
-            JavaFXUtils.showErrorAlert("ERROR AL INICIAR SESIÓN", "El campo de email no puede estar vacío");
-            return false;
-        }
-        if (passwordText.getText().isEmpty()) {
-            JavaFXUtils.showErrorAlert("ERROR AL INICIAR SESIÓN", "El campo de contraseña no puede estar vacío");
-            return false;
-        }
 
-        Usuario userToLogin = new Usuario("", emailText.getText(), JavaFXUtils.hashPassword(passwordText.getText()));
-        Usuario userFromDataBase = UsuarioDAO.buildUsuario().findByEmail(userToLogin.getEmail());
-        if (userFromDataBase != null) {
-            if (userFromDataBase.getEmail().equals(userToLogin.getEmail())) {
-                if (userFromDataBase.getContraseña() != null && userFromDataBase.getContraseña().equals(userToLogin.getContraseña())) {
-                    userSingleton.getInstance(userFromDataBase);
-                    System.out.println("Logueado correctamente");
-                    result = true;
-                    App.currentController.changeScene(Scenes.MENUPRINCIPAL, null);
-                } else {
-                    JavaFXUtils.showErrorAlert("ERROR AL INICIAR SESIÓN", "Contraseña incorrecta");
-                }
-            }
+        String email = emailText.getText();
+        String passwordHash = JavaFXUtils.hashPassword(passwordText.getText());
+
+        // Searching for the user
+        Usuario userFromDatabase = UsuarioDAO.buildUsuarioDAO().findByEmail(email);
+
+        if (userFromDatabase != null && userFromDatabase.getContraseña().equals(passwordHash)) {
+            userSingleton.initialize(userFromDatabase);
+            System.out.println("Logueado correctamente");
+
+            // Changing scene to main menu
+            App.currentController.changeScene(Scenes.MENUPRINCIPAL, null);
+            result = true;
         } else {
-            JavaFXUtils.showErrorAlert("ERROR AL INICIAR SESIÓN", "No hay ningún usuario con este email");
+            JavaFXUtils.showErrorAlert("ERROR AL INICIAR SESIÓN", "Credenciales incorrectas.");
         }
         return result;
     }

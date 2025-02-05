@@ -13,6 +13,7 @@
     <center>
         <AnchorPane prefHeight="600.0" prefWidth="900.0">
             <VBox spacing="15.0" alignment="CENTER" layoutX="350.0" layoutY="250.0" prefWidth="200.0">
+                <Button fx:id="btnRegistrarHuella" onAction="#goRegistrarHuella" text="Registrar Huella"/>
                 <Button fx:id="btnRegistrarHabito" onAction="#goRegistrarHabito" text="Registrar Hábito"/>
                 <Button fx:id="btnClose" onAction="#goBack" text="Cerrar Sesión"/>
             </VBox>

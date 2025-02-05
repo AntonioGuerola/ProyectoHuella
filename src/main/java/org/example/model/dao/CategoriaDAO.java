@@ -1,66 +1,49 @@
 package org.example.model.dao;
 
-import org.example.model.connection.MySQLConnection;
-import org.example.model.entities.Actividad;
 import org.example.model.entities.Categoria;
+import org.example.model.singleton.Connect;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
-public class CategoriaDAO implements DAO<Categoria, Integer>{
-    private static String FINDBYID = "SELECT x.id_categoria, x.nombre, x.factor_emision, x.unidad FROM categoria AS x WHERE x.id_categoria=?";
-
-    private final Connection con;
-
-    public CategoriaDAO(Connection con) {
-        this.con = MySQLConnection.getConnection();
-    }
+public class CategoriaDAO implements DAO<Categoria, Integer> {
+    private static final String FIND_BY_ID = "FROM Categoria c WHERE c.id = :id";
+    private static final String FIND_ALL = "FROM Categoria";
 
     @Override
-    public Categoria save(Categoria entity) throws SQLException {
+    public Categoria save(Categoria entity) {
         return null;
     }
 
     @Override
-    public Categoria delete(Categoria entity) throws SQLException {
+    public Categoria delete(Categoria entity) {
         return null;
     }
 
     @Override
-    public Categoria findById(Integer key) throws SQLException {
-        Categoria result = null;
-        try(PreparedStatement pst = con.prepareStatement(FINDBYID)){
-            pst.setInt(1, key);
-            ResultSet res = pst.executeQuery();
-            if (res.next()){
-                result = new Categoria();
-                result.setId(res.getInt("id_categoria"));
-                result.setNombre(res.getString("nombre"));
-                result.setFactorEmision(res.getBigDecimal("factor_emision"));
-                result.setUnidad(res.getString("unidad"));
-            }
-            res.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public Categoria findById(Integer key) {
+        try (Session session = Connect.getInstance().getSession()) {
+            return session.createQuery(FIND_BY_ID, Categoria.class)
+                    .setParameter("id", key)
+                    .uniqueResult();
         }
-        return result;
     }
 
     @Override
-    public List<Categoria> findAll() throws SQLException {
-        return List.of();
+    public List<Categoria> findAll() {
+        try (Session session = Connect.getInstance().getSession()) {
+            return session.createQuery(FIND_ALL, Categoria.class).list();
+        }
     }
 
     @Override
     public void close() throws IOException {
-
+        // No es necesario cerrar sesiones aquí, se manejan automáticamente con try-with-resources
     }
 
-    public static CategoriaDAO buildCategoria() {
-        return new CategoriaDAO(MySQLConnection.getConnection());
+    public static CategoriaDAO buildCategoriaDAO() {
+        return new CategoriaDAO();
     }
 }

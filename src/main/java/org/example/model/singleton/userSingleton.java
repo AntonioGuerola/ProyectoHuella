@@ -2,39 +2,40 @@ package org.example.model.singleton;
 
 import org.example.model.entities.Usuario;
 
-
 /**
- * Singleton class to manage the current modeler in the system.
+ * Singleton class to manage the current user in the system.
  */
 public class userSingleton {
     private static userSingleton _instance;
     private Usuario currentUser;
 
     /**
-     * Initializes a new instance of the userSingleton class with the provided user.
-     *
+     * Private constructor to prevent direct instantiation.
      * @param user The user to be set as the current user.
      */
     private userSingleton(Usuario user) {
-        currentUser = user;
+        this.currentUser = user;
     }
 
     /**
-     * Retrieves the instance of the UserSingleton class.
-     * @return The instance of UserSingleton.
+     * Returns the instance of userSingleton. If not initialized, returns null.
+     * @return The instance of userSingleton.
      */
     public static userSingleton getInstance() {
         return _instance;
     }
 
     /**
-     * Initializes the UserSingleton instance with the provided user.
+     * Initializes the Singleton instance with the provided user.
+     * If already initialized, returns the existing instance.
      * @param userToUse The user to be set as the current user.
+     * @return The instance of userSingleton.
      */
-    public static void getInstance(Usuario userToUse) {
-        if (userToUse != null) {
+    public static userSingleton initialize(Usuario userToUse) {
+        if (_instance == null && userToUse != null) {
             _instance = new userSingleton(userToUse);
         }
+        return _instance;
     }
 
     /**

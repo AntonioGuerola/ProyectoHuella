@@ -12,10 +12,10 @@ import org.example.model.utils.JavaFXUtils;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class signinController extends Controller implements Initializable {
+
     @FXML
     private TextField nameText;
 
@@ -30,68 +30,57 @@ public class signinController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 
     @Override
     public void onOpen(Object input) throws IOException {
-
     }
 
     @Override
     public void onClose(Object output) {
-
     }
 
     @FXML
-    public boolean saveUser() throws NoSuchAlgorithmException, SQLException, IOException {
+    public boolean saveUser() throws NoSuchAlgorithmException, IOException {
         boolean result = false;
-        if (emailText.getText().isEmpty() && passwordText.getText().isEmpty() && confirmPasswordText.getText().isEmpty() && nameText.getText().isEmpty()) {
+
+        if (nameText.getText().isEmpty() || emailText.getText().isEmpty() ||
+                passwordText.getText().isEmpty() || confirmPasswordText.getText().isEmpty()) {
             JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "No puede haber campos vacíos");
             return false;
         }
-        if (emailText.getText().isEmpty()) {
-            JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "El campo de email no puede estar vacío");
-            return false;
-        }
-        if (passwordText.getText().isEmpty()) {
-            JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "El campo de contraseña no puede estar vacío");
-            return false;
-        }
-        if (confirmPasswordText.getText().isEmpty()) {
-            JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "El campo para confirmar la contraseña no puede estar vacío");
-            return false;
-        }
-        if (nameText.getText().isEmpty()) {
-            JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "El campo del nombre no puede estar vacío");
+
+        if (!passwordText.getText().equals(confirmPasswordText.getText())) {
+            JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "Las contraseñas no coinciden");
             return false;
         }
 
-        if (passwordText.getText().length() <= 16){
-            if (passwordText.getText().equals(confirmPasswordText.getText())){
-                System.out.println(nameText.getText() + emailText.getText() + JavaFXUtils.hashPassword(passwordText.getText()));
-                Usuario userToRegister = new Usuario(nameText.getText(), emailText.getText(), JavaFXUtils.hashPassword(passwordText.getText()));
-                System.out.println(userToRegister);
-                if (JavaFXUtils.validateEmail(emailText.getText())){
-                    if (UsuarioDAO.buildUsuario().findByEmail(userToRegister.getEmail()) == null){
-                        System.out.println(userToRegister);
-                        UsuarioDAO.buildUsuario().save(userToRegister);
-                        userSingleton.getInstance(userToRegister);
-                        result = true;
-                        JavaFXUtils.showInfoAlert("ÉXITO", "Usuario registrado correctamente.");
-                        App.currentController.changeScene(Scenes.INICIO, null);
-                    }else{
-                        JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "Error al registrarse porque este email ya existe");
-                    }
-                }else{
-                    JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "Error al registrarse porque el email no es válido");
-                }
-            }else{
-                JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "Error al registrarse porque la contraseña es diferente");
-            }
-        }else{
-            JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "Error al registrarse porque la contraseña es muy larga");
+        if (passwordText.getText().length() > 16) {
+            JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "La contraseña es demasiado larga");
+            return false;
         }
+
+        if (!JavaFXUtils.validateEmail(emailText.getText())) {
+            JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "El email no es válido");
+            return false;
+        }
+
+        Usuario userToRegister = new Usuario(nameText.getText(), emailText.getText(), JavaFXUtils.hashPassword(passwordText.getText()));
+
+        UsuarioDAO usuarioDAO = UsuarioDAO.buildUsuarioDAO();
+
+        // Verificar si el usuario ya existe
+        if (usuarioDAO.findByEmail(userToRegister.getEmail()) == null) {
+            usuarioDAO.insertUsuario(userToRegister);
+            userSingleton.initialize(userToRegister);
+            JavaFXUtils.showInfoAlert("ÉXITO", "Usuario registrado correctamente.");
+            result = true;
+
+            App.currentController.changeScene(Scenes.INICIO, null);
+        } else {
+            JavaFXUtils.showErrorAlert("ERROR AL REGISTRARSE", "El email ya está registrado");
+        }
+
         return result;
     }
 

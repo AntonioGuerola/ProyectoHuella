@@ -1,110 +1,87 @@
 package org.example.model.dao;
 
-import org.example.model.connection.MySQLConnection;
 import org.example.model.entities.Habito;
 import org.example.model.entities.HabitoId;
+import org.example.model.singleton.Connect;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HabitoDAO implements DAO<Habito, HabitoId> {
-    private static final String INSERT = "INSERT INTO habito (id_usuario, id_actividad, frecuencia, tipo, ultima_fecha) VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE habito SET frecuencia = ?, tipo = ?, ultima_fecha = ? WHERE id_usuario = ? AND id_actividad = ?";
-    private static final String DELETE = "DELETE FROM habito WHERE id_usuario = ? AND id_actividad = ?";
-    private static final String FINDBYID = "SELECT id_usuario, id_actividad, frecuencia, tipo, ultima_fecha FROM habito WHERE id_usuario = ? AND id_actividad = ?";
-    private static final String FINDALL = "SELECT id_usuario, id_actividad, frecuencia, tipo, ultima_fecha FROM habito";
 
-    private final Connection con;
+    private static final String FIND_BY_ID = "FROM Habito h WHERE h.id.idUsuario = :idUsuario AND h.id.idActividad = :idActividad";
+    private static final String FIND_ALL = "FROM Habito";
 
-    public HabitoDAO(Connection con) {
-        this.con = MySQLConnection.getConnection();
-    }
-
+    /**
+     * Save or update a habit in the database.
+     * @param entity The habit to save or update.
+     * @return The saved or updated habit.
+     */
     @Override
-    public Habito save(Habito entity) throws SQLException {
+    public Habito save(Habito entity) {
         if (entity == null) return null;
-        if (findById(entity.getId()) == null) {
-            try (PreparedStatement pst = con.prepareStatement(INSERT)) {
-                pst.setInt(1, entity.getId().getIdUsuario());
-                pst.setInt(2, entity.getId().getIdActividad());
-                pst.setInt(3, entity.getFrecuencia());
-                pst.setString(4, entity.getTipo());
-                pst.setTimestamp(5, entity.getUltimaFecha() != null ? Timestamp.from(entity.getUltimaFecha()) : null);
-                pst.executeUpdate();
-            }
-        } else {
-            try (PreparedStatement pst = con.prepareStatement(UPDATE)) {
-                pst.setInt(1, entity.getFrecuencia());
-                pst.setString(2, entity.getTipo());
-                pst.setTimestamp(3, entity.getUltimaFecha() != null ? Timestamp.from(entity.getUltimaFecha()) : null);
-                pst.setInt(4, entity.getId().getIdUsuario());
-                pst.setInt(5, entity.getId().getIdActividad());
-                pst.executeUpdate();
-            }
+
+        try (Session session = Connect.getInstance().getSession()) {
+            Transaction tx = session.beginTransaction();
+            session.saveOrUpdate(entity);
+            tx.commit();
         }
+
         return entity;
     }
 
+    /**
+     * Delete a habit.
+     * @param entity The habit to delete.
+     * @return The deleted habit.
+     */
     @Override
-    public Habito delete(Habito entity) throws SQLException {
+    public Habito delete(Habito entity) {
         if (entity == null) return null;
-        try (PreparedStatement pst = con.prepareStatement(DELETE)) {
-            pst.setInt(1, entity.getId().getIdUsuario());
-            pst.setInt(2, entity.getId().getIdActividad());
-            pst.executeUpdate();
+
+        try (Session session = Connect.getInstance().getSession()) {
+            Transaction tx = session.beginTransaction();
+            session.delete(entity);
+            tx.commit();
         }
+
         return entity;
     }
 
+    /**
+     * Find a habit by its ID.
+     * @param key The key consisting of user ID and activity ID.
+     * @return The found habit, or null if not found.
+     */
     @Override
-    public Habito findById(HabitoId key) throws SQLException {
-        Habito result = null;
-        try (PreparedStatement pst = con.prepareStatement(FINDBYID)) {
-            pst.setInt(1, key.getIdUsuario());
-            pst.setInt(2, key.getIdActividad());
-            ResultSet res = pst.executeQuery();
-            if (res.next()) {
-                result = new Habito();
-                result.setId(new HabitoId(res.getInt("id_usuario"), res.getInt("id_actividad")));
-                result.setFrecuencia(res.getInt("frecuencia"));
-                result.setTipo(res.getString("tipo"));
-                Timestamp timestamp = res.getTimestamp("ultima_fecha");
-                result.setUltimaFecha(timestamp != null ? timestamp.toInstant() : null);
-            }
+    public Habito findById(HabitoId key) {
+        try (Session session = Connect.getInstance().getSession()) {
+            return session.createQuery(FIND_BY_ID, Habito.class)
+                    .setParameter("idUsuario", key.getIdUsuario())
+                    .setParameter("idActividad", key.getIdActividad())
+                    .uniqueResult();
         }
-        return result;
     }
 
+    /**
+     * Retrieve all habits.
+     * @return List of all habits.
+     */
     @Override
-    public List<Habito> findAll() throws SQLException {
-        List<Habito> result = new ArrayList<>();
-        try (PreparedStatement pst = con.prepareStatement(FINDALL)) {
-            ResultSet res = pst.executeQuery();
-            while (res.next()) {
-                Habito h = new Habito();
-                h.setId(new HabitoId(res.getInt("id_usuario"), res.getInt("id_actividad")));
-                h.setFrecuencia(res.getInt("frecuencia"));
-                h.setTipo(res.getString("tipo"));
-                Timestamp timestamp = res.getTimestamp("ultima_fecha");
-                h.setUltimaFecha(timestamp != null ? timestamp.toInstant() : null);
-                result.add(h);
-            }
+    public List<Habito> findAll() {
+        try (Session session = Connect.getInstance().getSession()) {
+            return session.createQuery(FIND_ALL, Habito.class).list();
         }
-        return result;
+    }
+
+    public static HabitoDAO buildHabitoDAO() {
+        return new HabitoDAO();
     }
 
     @Override
     public void close() throws IOException {
-        try {
-            if (con != null) con.close();
-        } catch (SQLException e) {
-            throw new IOException("Error cerrando la conexión", e);
-        }
-    }
 
-    public static HabitoDAO buildHabito() {
-        return new HabitoDAO(MySQLConnection.getConnection());
     }
 }

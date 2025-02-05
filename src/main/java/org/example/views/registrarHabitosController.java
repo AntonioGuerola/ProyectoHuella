@@ -49,18 +49,12 @@ public class registrarHabitosController extends Controller implements Initializa
 
     @Override
     public void onOpen(Object input) throws IOException {
-        try {
-            ActividadDAO actividadDAO = new ActividadDAO(MySQLConnection.getConnection());
-            List<Actividad> actividades = actividadDAO.findAll();
+        List<Actividad> actividades = ActividadDAO.buildActividadDAO().findAll();
 
-            // Limpiar y añadir las actividades al ChoiceBox
-            choiceBoxActividades.getItems().clear();
-            for (Actividad actividad : actividades) {
-                choiceBoxActividades.getItems().add(actividad.getNombre());
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        // Limpiar y añadir las actividades al ChoiceBox
+        choiceBoxActividades.getItems().clear();
+        for (Actividad actividad : actividades) {
+            choiceBoxActividades.getItems().add(actividad.getNombre());
         }
     }
 
@@ -119,15 +113,16 @@ public class registrarHabitosController extends Controller implements Initializa
             LocalDate fechaSeleccionada = datePicker.getValue();
             Instant ultimaFecha = fechaSeleccionada.atStartOfDay().toInstant(java.time.ZoneOffset.UTC);
 
-
+            // Crear un nuevo Habito
             Habito habito = new Habito(userLoggedIn, actividad, frecuencia, tipo, ultimaFecha);
 
-            HabitoDAO.buildHabito().save(habito);
+            // Guardar el Habito usando Hibernate
+            HabitoDAO.buildHabitoDAO().save(habito);
 
             JavaFXUtils.showInfoAlert("ÉXITO", "Hábito registrado correctamente.");
             return true;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             JavaFXUtils.showErrorAlert("ERROR AL REGISTRAR HÁBITO", "Ocurrió un error al guardar en la base de datos.");
             return false;
