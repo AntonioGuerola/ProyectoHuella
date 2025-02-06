@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "huella", schema = "eco")
@@ -30,9 +32,9 @@ public class Huella {
 
     @ColumnDefault("current_timestamp()")
     @Column(name = "fecha")
-    private Instant fecha;
+    private LocalDate fecha;
 
-    public Huella(Usuario idUsuario, Actividad idActividad, BigDecimal valor, String unidad, Instant fecha){
+    public Huella(Usuario idUsuario, Actividad idActividad, BigDecimal valor, String unidad, LocalDate fecha){
         this.idUsuario = idUsuario;
         this.idActividad = idActividad;
         this.valor = valor;
@@ -87,12 +89,20 @@ public class Huella {
         this.unidad = unidad;
     }
 
-    public Instant getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Instant fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
+    }
+
+    public BigDecimal getImpactoAmbiental() {
+        if (idActividad != null && idActividad.getIdCategoria() != null) {
+            BigDecimal factorEmision = idActividad.getIdCategoria().getFactorEmision();
+            return valor.multiply(factorEmision).setScale(2, RoundingMode.HALF_UP);
+        }
+        return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
     }
 
 }

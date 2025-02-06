@@ -163,7 +163,7 @@ public class registrarHuellaController extends Controller implements Initializab
                 return false;
             }
 
-            Huella huella = new Huella(userLoggedIn, actividad, valor, unidadSeleccionada, fechaInstant);
+            Huella huella = new Huella(userLoggedIn, actividad, valor, unidadSeleccionada, LocalDate.ofEpochDay(fechaInstant.toEpochMilli()));
 
             // Guardar la huella en la base de datos (con HuellaDAO)
             HuellaDAO.buildHuellaDAO().save(huella);

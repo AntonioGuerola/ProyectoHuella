@@ -12,12 +12,58 @@
 
     <center>
         <AnchorPane prefHeight="600.0" prefWidth="900.0">
-            <VBox spacing="15.0" alignment="CENTER" layoutX="350.0" layoutY="250.0" prefWidth="200.0">
-                <Button fx:id="btnRegistrarHuella" onAction="#goRegistrarHuella" text="Registrar Huella"/>
-                <Button fx:id="btnRegistrarHabito" onAction="#goRegistrarHabito" text="Registrar Hábito"/>
-                <Button fx:id="btnRecomendaciones" onAction="#goRecomendaciones" text="Recomendaciones"/>
-                <Button fx:id="btnClose" onAction="#goBack" text="Cerrar Sesión"/>
-            </VBox>
+            <HBox spacing="20.0" alignment="CENTER" prefWidth="900.0" prefHeight="600.0">
+
+                <!-- Sección izquierda: Tabla de huellas de carbono -->
+                <VBox spacing="15.0" prefWidth="650.0">
+
+                    <!-- Título de la tabla -->
+                    <Label text="Historial de Huellas de Carbono"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+                    <!-- Tabla con datos -->
+                    <TableView fx:id="tablaHuellas" prefWidth="600.0" prefHeight="400.0">
+                        <columns>
+                            <TableColumn fx:id="columnaActividad" text="Actividad" prefWidth="150.0"/>
+                            <TableColumn fx:id="columnaValor" text="Valor" prefWidth="100.0"/>
+                            <TableColumn fx:id="columnaUnidad" text="Unidad" prefWidth="100.0"/>
+                            <TableColumn fx:id="columnaFecha" text="Fecha" prefWidth="150.0"/>
+                            <TableColumn fx:id="columnaImpacto" text="Impacto Ambiental" prefWidth="150.0"/>
+                        </columns>
+                    </TableView>
+
+                    <!-- Impacto total -->
+                    <Label fx:id="impactoTotalLabel" text="Impacto total: 0 kg CO₂"
+                           style="-fx-font-size: 14px; -fx-text-fill: #2a2a2a; -fx-font-weight: bold;"/>
+
+                </VBox>
+
+                <!-- Sección derecha: Botones de navegación -->
+                <VBox spacing="20.0" alignment="CENTER" prefWidth="250.0">
+
+                    <Button fx:id="btnRegistrarHuella"
+                            onAction="#goRegistrarHuella"
+                            text="Registrar Huella"
+                            prefWidth="200.0"/>
+
+                    <Button fx:id="btnRegistrarHabito"
+                            onAction="#goRegistrarHabito"
+                            text="Registrar Hábito"
+                            prefWidth="200.0"/>
+
+                    <Button fx:id="btnRecomendaciones"
+                            onAction="#goRecomendaciones"
+                            text="Recomendaciones"
+                            prefWidth="200.0"/>
+
+                    <Button fx:id="btnClose"
+                            onAction="#goBack"
+                            text="Cerrar Sesión"
+                            prefWidth="200.0"/>
+
+                </VBox>
+
+            </HBox>
         </AnchorPane>
     </center>
 
