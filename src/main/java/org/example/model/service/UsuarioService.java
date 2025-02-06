@@ -2,8 +2,12 @@ package org.example.model.service;
 
 import org.example.model.dao.UsuarioDAO;
 import org.example.model.entities.Usuario;
+import org.example.model.singleton.Connect;
 import org.example.model.singleton.userSingleton;
 import org.example.model.utils.JavaFXUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
@@ -11,30 +15,6 @@ import java.util.List;
 
 public class UsuarioService {
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
-
-    public boolean loginUser(Usuario user) {
-        if (user.getEmail() == null || user.getContraseña() == null || user.getEmail().isEmpty() || user.getContraseña().isEmpty()) {
-            return false;
-        }
-
-        try {
-            Usuario foundUser = usuarioDAO.findUserByEmail(user.getEmail());
-            if (foundUser != null) {
-                String hashedInputPassword = JavaFXUtils.hashPassword(user.getContraseña());
-                if (hashedInputPassword.equals(foundUser.getContraseña())) {
-                    userSingleton.getInstance().getCurrentUser().setEmail(user.getEmail());
-                    System.out.println(foundUser);
-                    return true;
-                }
-                System.out.println("CONTRASEÑA INCORRECTA");
-            } else {
-                System.out.println("EMAIL NO ENCONTRADO");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     public boolean registerUser(Usuario user) {
         if (user.getEmail() == null || user.getContraseña() == null ||
@@ -54,11 +34,22 @@ public class UsuarioService {
         return true;
     }
 
-    public boolean updateUser(Usuario user) {
+    public boolean updateUser(Usuario user, String nuevaContraseña) {
         try {
-            if (user.getContraseña() != null) {
-                user.setContraseña(JavaFXUtils.hashPassword(user.getContraseña()));
+            // Verifica si la contraseña ha cambiado
+            if (nuevaContraseña != null && !nuevaContraseña.isEmpty()) {
+                if (nuevaContraseña.length() > 16) {
+                    JavaFXUtils.showErrorAlert("ERROR", "La contraseña no puede tener más de 16 caracteres.");
+                    return false;
+                }
+                if (JavaFXUtils.hashPassword(nuevaContraseña).equals(user.getContraseña())) {
+                    JavaFXUtils.showErrorAlert("ERROR", "La nueva contraseña no puede ser igual a la actual.");
+                    return false;
+                }
+                // Si la contraseña cambia, se hashea
+                user.setContraseña(JavaFXUtils.hashPassword(nuevaContraseña));
             }
+
             usuarioDAO.updateUsuario(user);
             return true;
         } catch (NoSuchAlgorithmException e) {
@@ -74,6 +65,7 @@ public class UsuarioService {
             e.printStackTrace();
         }
     }
+
 
     public Usuario getUserById(Integer userId) {
         try {

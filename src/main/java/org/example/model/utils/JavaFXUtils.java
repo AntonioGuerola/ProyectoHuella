@@ -1,13 +1,13 @@
 package org.example.model.utils;
 
 import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
-import org.example.App;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class JavaFXUtils {
@@ -25,6 +25,21 @@ public class JavaFXUtils {
         infoAlert.setHeaderText(title);
         infoAlert.setContentText(textAboutAlert);
         infoAlert.showAndWait();
+    }
+
+    public static boolean showConfirmationDialog(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        ButtonType buttonYes = new ButtonType("Sí");
+        ButtonType buttonNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonYes, buttonNo);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == buttonYes;
     }
 
     private static String bytesToHex(byte[] hash) {
