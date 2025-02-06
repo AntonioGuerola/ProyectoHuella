@@ -7,7 +7,6 @@ import org.example.model.utils.JavaFXUtils;
 import java.util.List;
 
 public class HuellaService {
-    private HuellaDAO huellaDAO = new HuellaDAO();
 
     public boolean createHuella(Huella huella) {
         if (huella == null || huella.getIdUsuario() == null || huella.getIdActividad() == null) {
@@ -16,7 +15,7 @@ public class HuellaService {
         }
 
         try {
-            huellaDAO.insertHuella(huella);
+            HuellaDAO.buildHuellaDAO().insertHuella(huella);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -31,7 +30,7 @@ public class HuellaService {
         }
 
         try {
-            huellaDAO.updateHuella(huella);
+            HuellaDAO.buildHuellaDAO().updateHuella(huella);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,7 +40,7 @@ public class HuellaService {
 
     public void deleteHuella(Huella huella) {
         try {
-            huellaDAO.deleteHuella(huella);
+            HuellaDAO.buildHuellaDAO().deleteHuella(huella);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,7 +53,7 @@ public class HuellaService {
         }
 
         try {
-            huellaDAO.deleteAllHuellasByUsuario(usuario);  // Pasamos el objeto usuario aquí
+            HuellaDAO.buildHuellaDAO().deleteAllHuellasByUsuario(usuario);  // Pasamos el objeto usuario aquí
             return true;
         } catch (Exception e) {
             JavaFXUtils.showErrorAlert("ERROR AL ELIMINAR HUELLAS", "Ocurrió un error al intentar eliminar las huellas.");
@@ -65,7 +64,7 @@ public class HuellaService {
 
     public Huella getHuellaById(Integer id) {
         try {
-            return huellaDAO.findById(id);
+            return HuellaDAO.buildHuellaDAO().findById(id);
         } catch (jakarta.persistence.NoResultException e) {
             return null; // Si no se encuentra la huella, devolvemos null
         } catch (Exception e) {
@@ -76,7 +75,7 @@ public class HuellaService {
 
     public List<Huella> getAllHuellas() {
         try {
-            return huellaDAO.findAll();
+            return HuellaDAO.buildHuellaDAO().findAll();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -85,7 +84,7 @@ public class HuellaService {
 
     public List<Huella> getHuellasByUserId(Integer userId) {
         try {
-            return huellaDAO.findByUserId(userId);
+            return HuellaDAO.buildHuellaDAO().findByUserId(userId);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
