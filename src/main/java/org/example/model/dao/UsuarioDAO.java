@@ -12,7 +12,6 @@ public class UsuarioDAO {
     private final static String FINDUSERBYID = "FROM Usuario WHERE id = :id";
     private final static String FINDUSERBYEMAIL = "FROM Usuario WHERE email = :email";
     private final static String FINDHUELLASDEUSUARIO = "SELECT u FROM Usuario u LEFT JOIN FETCH u.huellas WHERE u.id = :userId";
-    private final static String GETFACTOREMISION = "SELECT h.valor * c.factorEmision FROM Huella h JOIN Actividad a ON h.idActividad.id = a.id JOIN Categoria c ON a.idCategoria.id = c.id WHERE h.idUsuario.id = :idUsuario";
 
     public void insertUsuario(Usuario user) {
         Session session = Connect.getInstance().getSession();
@@ -73,13 +72,12 @@ public class UsuarioDAO {
         return user;
     }
 
-    public List<BigDecimal> getFactorEmision(Usuario user) {
+    public List<Usuario> getAllUsersWithFootprints() {
         Session session = Connect.getInstance().getSession();
-        Query query = session.createQuery(GETFACTOREMISION);
-        query.setParameter("idUsuario", user.getId());
-        List<BigDecimal> factorEmision = query.getResultList();
+        Query query = session.createQuery("SELECT DISTINCT u FROM Usuario u LEFT JOIN FETCH u.huellas", Usuario.class);
+        List<Usuario> users = (List<Usuario>) ((org.hibernate.query.Query<?>) query).list();
         session.close();
-        return factorEmision;
+        return users;
     }
 
 }

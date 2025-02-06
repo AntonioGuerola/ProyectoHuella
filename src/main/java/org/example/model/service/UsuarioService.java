@@ -100,6 +100,15 @@ public class UsuarioService {
         }
     }
 
+    public List<Usuario> getAllUsersWithFootprints() {
+        try {
+            return usuarioDAO.getAllUsersWithFootprints();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static UsuarioService buildUsuarioService() {
         return new UsuarioService();
     }
