@@ -9,7 +9,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.App;
-import org.example.model.dao.UsuarioDAO;
 import org.example.model.entities.Huella;
 import org.example.model.entities.Usuario;
 import org.example.model.service.UsuarioService;

@@ -8,19 +8,17 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.util.Callback;
 import org.example.App;
-import org.example.model.connection.MySQLConnection;
-import org.example.model.dao.ActividadDAO;
-import org.example.model.dao.HabitoDAO;
 import org.example.model.entities.Actividad;
 import org.example.model.entities.Habito;
 import org.example.model.entities.Tipo;
 import org.example.model.entities.Usuario;
+import org.example.model.service.ActividadService;
+import org.example.model.service.HabitoService;
 import org.example.model.singleton.userSingleton;
 import org.example.model.utils.JavaFXUtils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -49,7 +47,7 @@ public class registrarHabitosController extends Controller implements Initializa
 
     @Override
     public void onOpen(Object input) throws IOException {
-        List<Actividad> actividades = ActividadDAO.buildActividadDAO().findAll();
+        List<Actividad> actividades = ActividadService.buildActividadService().getAllActividades();
 
         // Limpiar y añadir las actividades al ChoiceBox
         choiceBoxActividades.getItems().clear();
@@ -89,7 +87,7 @@ public class registrarHabitosController extends Controller implements Initializa
 
         try {
             String actividadSeleccionada = choiceBoxActividades.getValue();
-            Actividad actividad = ActividadDAO.buildActividadDAO().findByName(actividadSeleccionada);
+            Actividad actividad = ActividadService.buildActividadService().getActividadByName(actividadSeleccionada);
 
             if (actividad == null) {
                 JavaFXUtils.showErrorAlert("ERROR AL REGISTRAR HÁBITO", "No se encontró la actividad seleccionada.");
@@ -117,7 +115,7 @@ public class registrarHabitosController extends Controller implements Initializa
             Habito habito = new Habito(userLoggedIn, actividad, frecuencia, tipo, ultimaFecha);
 
             // Guardar el Habito usando Hibernate
-            HabitoDAO.buildHabitoDAO().save(habito);
+            HabitoService.buildHabitoService().createHabito(habito);
 
             JavaFXUtils.showInfoAlert("ÉXITO", "Hábito registrado correctamente.");
             return true;

@@ -42,21 +42,16 @@ public class UsuarioService {
             return false;
         }
 
-        try {
-            Usuario existingUser = getUserByEmail(user.getEmail());
-            if (existingUser != null) {
-                JavaFXUtils.showErrorAlert("ERROR AL REGISTRAR EMAIL", "El email ya existe");
-                return false;
-            }
-
-            user.setContraseña(JavaFXUtils.hashPassword(user.getContraseña()));
-            usuarioDAO.insertUsuario(user);
-            userSingleton.getInstance().initialize(user);
-            return true;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        Usuario existingUser = getUserByEmail(user.getEmail());
+        if (existingUser != null) {
+            JavaFXUtils.showErrorAlert("ERROR AL REGISTRAR EMAIL", "El email ya existe");
+            return false;
         }
-        return false;
+
+        user.setContraseña(user.getContraseña());
+        usuarioDAO.insertUsuario(user);
+        userSingleton.getInstance().initialize(user);
+        return true;
     }
 
     public boolean updateUser(Usuario user) {
