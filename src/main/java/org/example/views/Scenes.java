@@ -8,7 +8,8 @@ public enum Scenes {
     MENUPRINCIPAL("view/main.fxml"),
     REGISTRARHUELLA("view/registrarHuella.fxml"),
     REGISTRARHABITOS("view/registrarHabitos.fxml"),
-    RECOMENDACIONES("view/recomendaciones.fxml");
+    RECOMENDACIONES("view/recomendaciones.fxml"),
+    CONSULTARHUELLAS("view/HuellaseImpacto.fxml");
 
     private String url;
 

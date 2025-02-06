@@ -4,25 +4,25 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.App;
-import org.example.model.dao.RecomendacionDAO;
 import org.example.model.dao.UsuarioDAO;
 import org.example.model.entities.Huella;
-import org.example.model.entities.Recomendacion;
 import org.example.model.entities.Usuario;
 import org.example.model.service.UsuarioService;
 import org.example.model.singleton.userSingleton;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class recomendacionesController extends Controller implements Initializable {
+public class HuellaseImpactoController extends Controller implements Initializable {
+    private Usuario userLoggedIn;
 
     @FXML
     private TableView<Huella> tablaHuellas;
@@ -40,14 +40,19 @@ public class recomendacionesController extends Controller implements Initializab
     private TableColumn<Huella, String> columnaFecha;
 
     @FXML
-    private TextField recomendacionTextField;
+    private TableColumn<Huella, BigDecimal> columnaImpacto;
 
+    @FXML
+    private Label impactoTotalLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        configurarColumnasTabla();
-        cargarHuellasUsuario();
-        configurarSeleccionTabla();
+        userLoggedIn = userSingleton.getInstance().getCurrentUser();
+
+        if (userLoggedIn != null) {
+            configurarColumnasTabla();
+            cargarHuellasUsuario();
+        }
     }
 
     private void configurarColumnasTabla() {
@@ -55,50 +60,28 @@ public class recomendacionesController extends Controller implements Initializab
         columnaValor.setCellValueFactory(new PropertyValueFactory<>("valor"));
         columnaUnidad.setCellValueFactory(new PropertyValueFactory<>("unidad"));
         columnaFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+        columnaImpacto.setCellValueFactory(new PropertyValueFactory<>("impactoAmbiental"));
     }
 
     private void cargarHuellasUsuario() {
-        var userLoggedIn = userSingleton.getInstance().getCurrentUser();
-
         if (userLoggedIn != null) {
             Usuario usuarioConHuellas = UsuarioService.buildUsuarioService().getUserWithFootprints(userLoggedIn.getId());
 
             if (usuarioConHuellas != null && usuarioConHuellas.getHuellas() != null) {
                 ObservableList<Huella> huellas = FXCollections.observableArrayList(usuarioConHuellas.getHuellas());
                 tablaHuellas.setItems(huellas);
+
+                // Calcular impacto total
+                BigDecimal impactoTotal = calcularImpactoTotal(usuarioConHuellas.getHuellas());
+                impactoTotalLabel.setText("Impacto total: " + impactoTotal + " kg CO₂");
             }
         }
     }
 
-    private void configurarSeleccionTabla() {
-        tablaHuellas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                mostrarRecomendacion(newSelection);
-            }
-        });
-    }
-
-    private void mostrarRecomendacion(Huella huella) {
-        try {
-            // Obtener la categoría desde la actividad asociada a la huella
-            if (huella.getIdActividad() != null && huella.getIdActividad().getIdCategoria() != null) {
-                Integer categoriaId = huella.getIdActividad().getIdCategoria().getId();
-
-                // Buscar recomendaciones basadas en la categoría obtenida
-                List<Recomendacion> recomendaciones = RecomendacionDAO.buildRecomendacionDAO().findByCategoria(categoriaId);
-
-                if (!recomendaciones.isEmpty()) {
-                    recomendacionTextField.setText(recomendaciones.get(0).getDescripcion());
-                } else {
-                    recomendacionTextField.setText("No hay recomendaciones disponibles.");
-                }
-            } else {
-                recomendacionTextField.setText("No se encontró una categoría para esta huella.");
-            }
-        } catch (Exception e) {
-            recomendacionTextField.setText("Error al cargar recomendaciones.");
-            e.printStackTrace();
-        }
+    private BigDecimal calcularImpactoTotal(List<Huella> huellas) {
+        return huellas.stream()
+                .map(Huella::getImpactoAmbiental)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public void goBack() throws IOException {

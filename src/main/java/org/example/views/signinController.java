@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import org.example.App;
 import org.example.model.dao.UsuarioDAO;
 import org.example.model.entities.Usuario;
+import org.example.model.service.UsuarioService;
 import org.example.model.singleton.userSingleton;
 import org.example.model.utils.JavaFXUtils;
 
@@ -67,11 +68,9 @@ public class signinController extends Controller implements Initializable {
 
         Usuario userToRegister = new Usuario(nameText.getText(), emailText.getText(), JavaFXUtils.hashPassword(passwordText.getText()));
 
-        UsuarioDAO usuarioDAO = UsuarioDAO.buildUsuarioDAO();
-
         // Verificar si el usuario ya existe
-        if (usuarioDAO.findByEmail(userToRegister.getEmail()) == null) {
-            usuarioDAO.insertUsuario(userToRegister);
+        if (UsuarioService.buildUsuarioService().getUserByEmail(userToRegister.getEmail()) == null) {
+            UsuarioService.buildUsuarioService().registerUser(userToRegister);
             userSingleton.initialize(userToRegister);
             JavaFXUtils.showInfoAlert("ÉXITO", "Usuario registrado correctamente.");
             result = true;
