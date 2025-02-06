@@ -4,84 +4,56 @@ import org.example.model.entities.Habito;
 import org.example.model.entities.HabitoId;
 import org.example.model.singleton.Connect;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-
-import java.io.IOException;
+import jakarta.persistence.Query;
 import java.util.List;
 
-public class HabitoDAO implements DAO<Habito, HabitoId> {
+public class HabitoDAO {
 
     private static final String FIND_BY_ID = "FROM Habito h WHERE h.id.idUsuario = :idUsuario AND h.id.idActividad = :idActividad";
     private static final String FIND_ALL = "FROM Habito";
 
-    /**
-     * Save or update a habit in the database.
-     * @param entity The habit to save or update.
-     * @return The saved or updated habit.
-     */
-    @Override
-    public Habito save(Habito entity) {
-        if (entity == null) return null;
-
-        try (Session session = Connect.getInstance().getSession()) {
-            Transaction tx = session.beginTransaction();
-            session.saveOrUpdate(entity);
-            tx.commit();
-        }
-
-        return entity;
+    public void insertHabito(Habito habito) {
+        Session session = Connect.getInstance().getSession();
+        session.beginTransaction();
+        session.merge(habito);
+        session.getTransaction().commit();
+        session.close();
     }
 
-    /**
-     * Delete a habit.
-     * @param entity The habit to delete.
-     * @return The deleted habit.
-     */
-    @Override
-    public Habito delete(Habito entity) {
-        if (entity == null) return null;
-
-        try (Session session = Connect.getInstance().getSession()) {
-            Transaction tx = session.beginTransaction();
-            session.delete(entity);
-            tx.commit();
-        }
-
-        return entity;
+    public void updateHabito(Habito habito) {
+        Session session = Connect.getInstance().getSession();
+        session.beginTransaction();
+        session.update(habito);
+        session.getTransaction().commit();
+        session.close();
     }
 
-    /**
-     * Find a habit by its ID.
-     * @param key The key consisting of user ID and activity ID.
-     * @return The found habit, or null if not found.
-     */
-    @Override
-    public Habito findById(HabitoId key) {
-        try (Session session = Connect.getInstance().getSession()) {
-            return session.createQuery(FIND_BY_ID, Habito.class)
-                    .setParameter("idUsuario", key.getIdUsuario())
-                    .setParameter("idActividad", key.getIdActividad())
-                    .uniqueResult();
-        }
+    public void deleteHabito(Habito habito) {
+        Session session = Connect.getInstance().getSession();
+        session.beginTransaction();
+        session.remove(habito);
+        session.getTransaction().commit();
+        session.close();
     }
 
-    /**
-     * Retrieve all habits.
-     * @return List of all habits.
-     */
-    @Override
+    public Habito findById(HabitoId id) {
+        Session session = Connect.getInstance().getSession();
+        Query query = session.createQuery(FIND_BY_ID);
+        query.setParameter("idUsuario", id.getIdUsuario());
+        query.setParameter("idActividad", id.getIdActividad());
+        Habito habito = (Habito) query.getSingleResult();
+        session.close();
+        return habito;
+    }
+
     public List<Habito> findAll() {
-        try (Session session = Connect.getInstance().getSession()) {
-            return session.createQuery(FIND_ALL, Habito.class).list();
-        }
+        Session session = Connect.getInstance().getSession();
+        List<Habito> habitos = session.createQuery(FIND_ALL, Habito.class).list();
+        session.close();
+        return habitos;
     }
 
     public static HabitoDAO buildHabitoDAO() {
         return new HabitoDAO();
-    }
-
-    @Override
-    public void close() throws IOException {
-
     }
 }

@@ -8,11 +8,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.util.Callback;
 import org.example.App;
-import org.example.model.dao.ActividadDAO;
-import org.example.model.dao.HuellaDAO;
 import org.example.model.entities.Actividad;
 import org.example.model.entities.Huella;
 import org.example.model.entities.Usuario;
+import org.example.model.service.ActividadService;
+import org.example.model.service.HuellaService;
 import org.example.model.singleton.userSingleton;
 import org.example.model.utils.JavaFXUtils;
 
@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -47,7 +46,7 @@ public class registrarHuellaController extends Controller implements Initializab
 
     @Override
     public void onOpen(Object input) throws IOException {
-        List<Actividad> actividades = ActividadDAO.buildActividadDAO().findAll();
+        List<Actividad> actividades = ActividadService.buildActividadService().getAllActividades();
 
         choiceBoxActividades.getItems().clear();
         for (Actividad actividad : actividades) {
@@ -63,7 +62,7 @@ public class registrarHuellaController extends Controller implements Initializab
         String actividadSeleccionada = choiceBoxActividades.getValue();
 
         // Buscar la actividad en la base de datos
-        Actividad actividad = ActividadDAO.buildActividadDAO().findByName(actividadSeleccionada);
+        Actividad actividad = ActividadService.buildActividadService().getActividadByName(actividadSeleccionada);
         if (actividad != null) {
             // Obtener la categoría de la actividad
             int categoria = actividad.getIdCategoria().getId();  // Asegúrate de que la actividad tiene el atributo categoría
@@ -158,7 +157,7 @@ public class registrarHuellaController extends Controller implements Initializab
             Instant fechaInstant = fechaSeleccionada.atStartOfDay().toInstant(java.time.ZoneOffset.UTC);
 
             // Crear la Huella (asegúrate de que la clase Huella esté definida correctamente)
-            Actividad actividad = ActividadDAO.buildActividadDAO().findByName(actividadSeleccionada); // Buscar la actividad en la base de datos
+            Actividad actividad = ActividadService.buildActividadService().getActividadByName(actividadSeleccionada);
             if (actividad == null) {
                 JavaFXUtils.showErrorAlert("ERROR AL REGISTRAR HUELLA", "No se encontró la actividad seleccionada.");
                 return false;
@@ -166,8 +165,7 @@ public class registrarHuellaController extends Controller implements Initializab
 
             Huella huella = new Huella(userLoggedIn, actividad, valor, unidadSeleccionada, fechaSeleccionada);
 
-            // Guardar la huella en la base de datos (con HuellaDAO)
-            HuellaDAO.buildHuellaDAO().save(huella);
+            HuellaService.buildHuellaService().createHuella(huella);
 
             JavaFXUtils.showInfoAlert("ÉXITO", "Huella registrada correctamente.");
             return true;

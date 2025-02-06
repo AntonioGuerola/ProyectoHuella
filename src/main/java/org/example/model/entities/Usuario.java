@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class Usuario {
 
     @ColumnDefault("current_timestamp()")
     @Column(name = "fecha_registro")
-    private Instant fechaRegistro;
+    private LocalDate fechaRegistro;
 
     @OneToMany(mappedBy = "idUsuario")
     private List<Habito> habitos = new ArrayList<>();
@@ -34,10 +35,11 @@ public class Usuario {
     @OneToMany(mappedBy = "idUsuario")
     private List<Huella> huellas = new ArrayList<>();
 
-    public Usuario(String nombre, String email, String contraseña){
+    public Usuario(String nombre, String email, String contraseña) {
         this.nombre = nombre;
         this.email = email;
         this.contraseña = contraseña;
+        this.fechaRegistro = LocalDate.now();
     }
 
     public Usuario() {
@@ -75,11 +77,11 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
-    public Instant getFechaRegistro() {
+    public LocalDate getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(Instant fechaRegistro) {
+    public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 

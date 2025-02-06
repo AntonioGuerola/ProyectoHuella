@@ -9,11 +9,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.App;
-import org.example.model.dao.RecomendacionDAO;
-import org.example.model.dao.UsuarioDAO;
 import org.example.model.entities.Huella;
 import org.example.model.entities.Recomendacion;
 import org.example.model.entities.Usuario;
+import org.example.model.service.RecomendacionService;
 import org.example.model.service.UsuarioService;
 import org.example.model.singleton.userSingleton;
 
@@ -85,7 +84,7 @@ public class recomendacionesController extends Controller implements Initializab
                 Integer categoriaId = huella.getIdActividad().getIdCategoria().getId();
 
                 // Buscar recomendaciones basadas en la categoría obtenida
-                List<Recomendacion> recomendaciones = RecomendacionDAO.buildRecomendacionDAO().findByCategoria(categoriaId);
+                List<Recomendacion> recomendaciones = RecomendacionService.buildRecomendacionService().getRecomendacionesByCategoria(categoriaId);
 
                 if (!recomendaciones.isEmpty()) {
                     recomendacionTextField.setText(recomendaciones.get(0).getDescripcion());

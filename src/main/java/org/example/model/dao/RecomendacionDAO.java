@@ -3,55 +3,46 @@ package org.example.model.dao;
 import org.example.model.entities.Recomendacion;
 import org.example.model.singleton.Connect;
 import org.hibernate.Session;
-
-import java.io.IOException;
+import jakarta.persistence.Query;
 import java.util.List;
 
-public class RecomendacionDAO implements DAO<Recomendacion, Integer> {
+public class RecomendacionDAO {
+
     private static final String FIND_BY_ID = "FROM Recomendacion c WHERE c.id = :id";
     private static final String FIND_ALL = "FROM Recomendacion";
     private static final String FIND_BY_CATEGORIA = "FROM Recomendacion r WHERE r.idCategoria.id = :categoriaId";
 
-    @Override
-    public Recomendacion save(Recomendacion entity) {
-        return null;
+    public void insertRecomendacion(Recomendacion recomendacion) {
     }
 
-    @Override
-    public Recomendacion delete(Recomendacion entity) {
-        return null;
+    public void updateRecomendacion(Recomendacion recomendacion) {
     }
 
-    @Override
-    public Recomendacion findById(Integer key) {
-        try (Session session = Connect.getInstance().getSession()) {
-            return session.createQuery(FIND_BY_ID, Recomendacion.class)
-                    .setParameter("id", key)
-                    .uniqueResult();
-        }
+    public void deleteRecomendacion(Recomendacion recomendacion) {
     }
 
-    @Override
-    public List<Recomendacion> findAll() {
-        try (Session session = Connect.getInstance().getSession()) {
-            return session.createQuery(FIND_ALL, Recomendacion.class).list();
-        }
+    public Recomendacion findById(Integer id) {
+        Session session = Connect.getInstance().getSession();
+        Query query = session.createQuery(FIND_BY_ID);
+        query.setParameter("id", id);
+        Recomendacion recomendacion = (Recomendacion) query.getSingleResult();
+        session.close();
+        return recomendacion;
     }
 
     public List<Recomendacion> findByCategoria(Integer categoriaId) {
-        try (Session session = Connect.getInstance().getSession()) {
-            return session.createQuery(FIND_BY_CATEGORIA, Recomendacion.class)
-                    .setParameter("categoriaId", categoriaId)
-                    .list();
-        }
+        Session session = Connect.getInstance().getSession();
+        Query query = session.createQuery(FIND_BY_CATEGORIA, Recomendacion.class);
+        query.setParameter("categoriaId", categoriaId);
+        List<Recomendacion> recomendaciones = query.getResultList();
+        session.close();
+        return recomendaciones;
     }
 
-    @Override
-    public void close() throws IOException {
-        // No es necesario cerrar la sesión aquí
-    }
-
-    public static RecomendacionDAO buildRecomendacionDAO() {
-        return new RecomendacionDAO();
+    public List<Recomendacion> findAll() {
+        Session session = Connect.getInstance().getSession();
+        List<Recomendacion> recomendaciones = session.createQuery(FIND_ALL, Recomendacion.class).list();
+        session.close();
+        return recomendaciones;
     }
 }

@@ -2,11 +2,9 @@ package org.example.model.dao;
 
 import org.example.model.entities.Usuario;
 import org.example.model.singleton.Connect;
-import org.example.model.utils.JavaFXUtils;
 import org.hibernate.Session;
 import jakarta.persistence.Query;
 import java.math.BigDecimal;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class UsuarioDAO {

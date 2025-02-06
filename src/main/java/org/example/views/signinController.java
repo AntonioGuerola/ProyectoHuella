@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import org.example.App;
-import org.example.model.dao.UsuarioDAO;
 import org.example.model.entities.Usuario;
 import org.example.model.service.UsuarioService;
 import org.example.model.singleton.userSingleton;
