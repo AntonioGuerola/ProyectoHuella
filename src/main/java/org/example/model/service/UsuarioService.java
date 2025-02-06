@@ -2,14 +2,9 @@ package org.example.model.service;
 
 import org.example.model.dao.UsuarioDAO;
 import org.example.model.entities.Usuario;
-import org.example.model.singleton.Connect;
 import org.example.model.singleton.userSingleton;
 import org.example.model.utils.JavaFXUtils;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
-import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
@@ -99,15 +94,6 @@ public class UsuarioService {
     public Usuario getUserWithFootprints(Integer userId) {
         try {
             return usuarioDAO.getUsuarioConHuellas(userId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public List<BigDecimal> getEmissionFactor(Usuario user) {
-        try {
-            return usuarioDAO.getFactorEmision(user);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

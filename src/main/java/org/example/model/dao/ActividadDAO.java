@@ -12,15 +12,6 @@ public class ActividadDAO {
     private static final String FIND_ALL = "FROM Actividad";
     private static final String FIND_BY_NAME = "FROM Actividad a WHERE a.nombre = :nombre";
 
-    public void insertActividad(Actividad actividad) {
-    }
-
-    public void updateActividad(Actividad actividad) {
-    }
-
-    public void deleteActividad(Actividad actividad) {
-    }
-
     public Actividad findById(Integer id) {
         Session session = Connect.getInstance().getSession();
         Query query = session.createQuery(FIND_BY_ID);
