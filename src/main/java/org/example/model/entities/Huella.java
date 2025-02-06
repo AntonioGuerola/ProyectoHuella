@@ -104,5 +104,4 @@ public class Huella {
         }
         return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
     }
-
 }

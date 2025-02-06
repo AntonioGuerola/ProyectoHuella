@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -163,7 +164,7 @@ public class registrarHuellaController extends Controller implements Initializab
                 return false;
             }
 
-            Huella huella = new Huella(userLoggedIn, actividad, valor, unidadSeleccionada, LocalDate.ofEpochDay(fechaInstant.toEpochMilli()));
+            Huella huella = new Huella(userLoggedIn, actividad, valor, unidadSeleccionada, fechaSeleccionada);
 
             // Guardar la huella en la base de datos (con HuellaDAO)
             HuellaDAO.buildHuellaDAO().save(huella);

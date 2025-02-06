@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import org.example.App;
 import org.example.model.dao.UsuarioDAO;
 import org.example.model.entities.Usuario;
+import org.example.model.service.UsuarioService;
 import org.example.model.singleton.userSingleton;
 import org.example.model.utils.JavaFXUtils;
 
@@ -51,7 +52,7 @@ public class loginController extends Controller implements Initializable {
         String passwordHash = JavaFXUtils.hashPassword(passwordText.getText());
 
         // Searching for the user
-        Usuario userFromDatabase = UsuarioDAO.buildUsuarioDAO().findByEmail(email);
+        Usuario userFromDatabase = UsuarioService.buildUsuarioService().getUserByEmail(email);
 
         if (userFromDatabase != null && userFromDatabase.getContraseña().equals(passwordHash)) {
             userSingleton.initialize(userFromDatabase);

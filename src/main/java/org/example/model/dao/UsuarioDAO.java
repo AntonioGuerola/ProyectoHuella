@@ -2,99 +2,86 @@ package org.example.model.dao;
 
 import org.example.model.entities.Usuario;
 import org.example.model.singleton.Connect;
+import org.example.model.utils.JavaFXUtils;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import jakarta.persistence.Query;
+import java.math.BigDecimal;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class UsuarioDAO {
 
-    private static final String FIND_BY_EMAIL = "FROM Usuario u WHERE u.email = :email";
-    private static final String FIND_BY_ID = "FROM Usuario u WHERE u.id = :id";
-    private static final String FIND_ALL = "FROM Usuario";
-    private static final String FINDHUELLASDEUSUARIO = "SELECT u FROM Usuario u LEFT JOIN FETCH u.huellas WHERE u.id = :userId";
+    private final static String FINDUSERBYID = "FROM Usuario WHERE id = :id";
+    private final static String FINDUSERBYEMAIL = "FROM Usuario WHERE email = :email";
+    private final static String FINDHUELLASDEUSUARIO = "SELECT u FROM Usuario u LEFT JOIN FETCH u.huellas WHERE u.id = :userId";
+    private final static String GETFACTOREMISION = "SELECT h.valor * c.factorEmision FROM Huella h JOIN Actividad a ON h.idActividad.id = a.id JOIN Categoria c ON a.idCategoria.id = c.id WHERE h.idUsuario.id = :idUsuario";
 
-    /**
-     * Insert a new user in the database.
-     * @param usuario The user to insert.
-     */
-    public void insertUsuario(Usuario usuario) {
-        try (Session session = Connect.getInstance().getSession()) {
-            Transaction tx = session.beginTransaction();
-            usuario.setFechaRegistro(java.time.Instant.now()); // Set registration date
-            session.save(usuario);
-            tx.commit();
-        }
+    public void insertUsuario(Usuario user) {
+        Session session = Connect.getInstance().getSession();
+        session.beginTransaction();
+        session.persist(user);
+        session.getTransaction().commit();
+        session.close();
     }
 
-    /**
-     * Update an existing user.
-     * @param usuario The user to update.
-     */
-    public void updateUsuario(Usuario usuario) {
-        try (Session session = Connect.getInstance().getSession()) {
-            Transaction tx = session.beginTransaction();
-            session.merge(usuario);
-            tx.commit();
-        }
+    public void updateUsuario(Usuario user) {
+        Session session = Connect.getInstance().getSession();
+        session.beginTransaction();
+        session.update(user);
+        session.getTransaction().commit();
+        session.close();
     }
 
-    /**
-     * Delete a user.
-     * @param usuario The user to delete.
-     */
-    public void deleteUsuario(Usuario usuario) {
-        try (Session session = Connect.getInstance().getSession()) {
-            Transaction tx = session.beginTransaction();
-            session.delete(usuario);
-            tx.commit();
-        }
+    public void deleteUsuario(Usuario user) {
+        Session session = Connect.getInstance().getSession();
+        session.beginTransaction();
+        session.remove(user);
+        session.getTransaction().commit();
+        session.close();
     }
 
-    /**
-     * Find a user by ID.
-     * @param id The ID to search.
-     * @return The user found, or null if not found.
-     */
-    public Usuario findById(Integer id) {
-        try (Session session = Connect.getInstance().getSession()) {
-            return session.createQuery(FIND_BY_ID, Usuario.class)
-                    .setParameter("id", id)
-                    .uniqueResult();
-        }
+    public Usuario findUserByID(Integer id) {
+        Session session = Connect.getInstance().getSession();
+        Query query = session.createQuery(FINDUSERBYID);
+        query.setParameter("id", id);
+        Usuario user = (Usuario) query.getSingleResult();
+        session.close();
+        return user;
     }
 
-    /**
-     * Find a user by email.
-     * @param email The email to search.
-     * @return The user found, or null if not found.
-     */
-    public Usuario findByEmail(String email) {
-        try (Session session = Connect.getInstance().getSession()) {
-            return session.createQuery(FIND_BY_EMAIL, Usuario.class)
-                    .setParameter("email", email)
-                    .uniqueResult();
-        }
+    public Usuario findUserByEmail(String email) {
+        Session session = Connect.getInstance().getSession();
+        Query query = session.createQuery(FINDUSERBYEMAIL);
+        query.setParameter("email", email);
+
+        Usuario user = (Usuario) query.getSingleResult(); // Permitimos que lance la excepción
+        session.close();
+        return user;
     }
 
-    /**
-     * Retrieve all users.
-     * @return List of all users.
-     */
     public List<Usuario> findAll() {
-        try (Session session = Connect.getInstance().getSession()) {
-            return session.createQuery(FIND_ALL, Usuario.class).list();
-        }
-    }
-
-    public static UsuarioDAO buildUsuarioDAO() {
-        return new UsuarioDAO();
+        Session session = Connect.getInstance().getSession();
+        List<Usuario> users = session.createQuery("FROM Usuario", Usuario.class).list();
+        session.close();
+        return users;
     }
 
     public Usuario getUsuarioConHuellas(Integer userId) {
-        try (Session session = Connect.getInstance().getSession()) {
-            return session.createQuery(FINDHUELLASDEUSUARIO, Usuario.class)
-                    .setParameter("userId", userId)
-                    .uniqueResult();
-        }
+        Session session = Connect.getInstance().getSession();
+        Query query = session.createQuery(FINDHUELLASDEUSUARIO);
+        query.setParameter("userId", userId);
+        Usuario user = (Usuario) query.getSingleResult();
+        session.close();
+        return user;
     }
+
+    public List<BigDecimal> getFactorEmision(Usuario user) {
+        Session session = Connect.getInstance().getSession();
+        Query query = session.createQuery(GETFACTOREMISION);
+        query.setParameter("idUsuario", user.getId());
+        List<BigDecimal> factorEmision = query.getResultList();
+        session.close();
+        return factorEmision;
+    }
+
 }
