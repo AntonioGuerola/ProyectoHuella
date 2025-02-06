@@ -34,6 +34,10 @@ public class mainController extends Controller implements Initializable {
         App.currentController.changeScene(Scenes.RECOMENDACIONES, null);
     }
 
+    public void goAjustes() throws IOException {
+        App.currentController.changeScene(Scenes.AJUSTES, null);
+    }
+
     public void goBack() throws IOException {
         userSingleton.closeSession();
         App.currentController.changeScene(Scenes.INICIO, null);

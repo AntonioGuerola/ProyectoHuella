@@ -168,6 +168,7 @@ public class registrarHuellaController extends Controller implements Initializab
             HuellaService.buildHuellaService().createHuella(huella);
 
             JavaFXUtils.showInfoAlert("ÉXITO", "Huella registrada correctamente.");
+            App.currentController.changeScene(Scenes.MENUPRINCIPAL, null);
             return true;
 
         } catch (Exception e) {

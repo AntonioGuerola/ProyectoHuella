@@ -118,6 +118,7 @@ public class registrarHabitosController extends Controller implements Initializa
             HabitoService.buildHabitoService().createHabito(habito);
 
             JavaFXUtils.showInfoAlert("ÉXITO", "Hábito registrado correctamente.");
+            App.currentController.changeScene(Scenes.MENUPRINCIPAL, null);
             return true;
 
         } catch (Exception e) {

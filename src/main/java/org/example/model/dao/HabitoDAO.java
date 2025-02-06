@@ -11,6 +11,7 @@ public class HabitoDAO {
 
     private static final String FIND_BY_ID = "FROM Habito h WHERE h.id.idUsuario = :idUsuario AND h.id.idActividad = :idActividad";
     private static final String FIND_ALL = "FROM Habito";
+    private static final String DELETE_ALL_BY_USUARIO = "DELETE FROM Habito h WHERE h.id.idUsuario = :idUsuario";
 
     public void insertHabito(Habito habito) {
         Session session = Connect.getInstance().getSession();
@@ -32,6 +33,16 @@ public class HabitoDAO {
         Session session = Connect.getInstance().getSession();
         session.beginTransaction();
         session.remove(habito);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public void deleteAllHabitosByUsuario(String idUsuario) {
+        Session session = Connect.getInstance().getSession();
+        session.beginTransaction();
+        Query query = session.createQuery(DELETE_ALL_BY_USUARIO);
+        query.setParameter("idUsuario", idUsuario);
+        query.executeUpdate();  // Ejecutamos el DELETE
         session.getTransaction().commit();
         session.close();
     }

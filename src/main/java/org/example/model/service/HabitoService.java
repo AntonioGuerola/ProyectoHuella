@@ -47,6 +47,22 @@ public class HabitoService {
         }
     }
 
+    public boolean deleteAllHabitosByUsuario(String idUsuario) {
+        if (idUsuario == null || idUsuario.isEmpty()) {
+            JavaFXUtils.showErrorAlert("ERROR AL ELIMINAR HÁBITOS", "El ID del usuario es inválido.");
+            return false;
+        }
+
+        try {
+            habitoDAO.deleteAllHabitosByUsuario(idUsuario);
+            return true;
+        } catch (Exception e) {
+            JavaFXUtils.showErrorAlert("ERROR AL ELIMINAR HÁBITOS", "Ocurrió un error al intentar eliminar los hábitos.");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public Habito getHabitoById(HabitoId id) {
         try {
             return habitoDAO.findById(id);

@@ -2,6 +2,7 @@ package org.example.model.service;
 
 import org.example.model.dao.HuellaDAO;
 import org.example.model.entities.Huella;
+import org.example.model.entities.Usuario;
 import org.example.model.utils.JavaFXUtils;
 import java.util.List;
 
@@ -43,6 +44,22 @@ public class HuellaService {
             huellaDAO.deleteHuella(huella);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public boolean deleteAllHuellasByUsuario(Usuario usuario) {
+        if (usuario == null || usuario.getId() == null) {
+            JavaFXUtils.showErrorAlert("ERROR AL ELIMINAR HUELLAS", "El usuario es inválido.");
+            return false;
+        }
+
+        try {
+            huellaDAO.deleteAllHuellasByUsuario(usuario);  // Pasamos el objeto usuario aquí
+            return true;
+        } catch (Exception e) {
+            JavaFXUtils.showErrorAlert("ERROR AL ELIMINAR HUELLAS", "Ocurrió un error al intentar eliminar las huellas.");
+            e.printStackTrace();
+            return false;
         }
     }
 
