@@ -3,6 +3,7 @@ package org.example.model.entities;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -99,6 +100,16 @@ public class Usuario {
 
     public void setHuellas(List<Huella> huellas) {
         this.huellas = huellas;
+    }
+
+    private BigDecimal impactoTotal;
+
+    public BigDecimal getImpactoTotal() {
+        return impactoTotal;
+    }
+
+    public void setImpactoTotal(BigDecimal impactoTotal) {
+        this.impactoTotal = impactoTotal;
     }
 
     @Override

@@ -10,6 +10,7 @@ public enum Scenes {
     REGISTRARHABITOS("view/registrarHabitos.fxml"),
     RECOMENDACIONES("view/recomendaciones.fxml"),
     AJUSTES("view/ajustesUsuario.fxml"),
+    COMPARACIONIMPACTO("view/comparacionImpacto.fxml"),
     CONSULTARHUELLAS("view/HuellaseImpacto.fxml");
 
     private String url;
