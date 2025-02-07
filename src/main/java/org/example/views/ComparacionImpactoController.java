@@ -16,10 +16,9 @@ import org.example.model.entities.Usuario;
 import org.example.model.service.UsuarioService;
 
 import java.io.IOException;
-import java.net.URL;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.net.URL;
+import java.util.*;
 
 public class ComparacionImpactoController extends Controller implements Initializable {
 
@@ -35,16 +34,13 @@ public class ComparacionImpactoController extends Controller implements Initiali
     @FXML
     private BarChart<String, Number> graficoImpacto;
 
-    @FXML
-    private CategoryAxis ejeUsuarios;
-
-    @FXML
-    private NumberAxis ejeImpacto;
+    private final ObservableList<Usuario> usuariosSeleccionados = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         configurarColumnasTabla();
         cargarImpactoUsuarios();
+        configurarSeleccionTabla();
     }
 
     private void configurarColumnasTabla() {
@@ -53,36 +49,18 @@ public class ComparacionImpactoController extends Controller implements Initiali
     }
 
     private void cargarImpactoUsuarios() {
-        // Obtener la lista de usuarios con sus huellas
         List<Usuario> usuarios = UsuarioService.buildUsuarioService().getAllUsersWithFootprints();
-
-        // Crear una lista observable para la tabla
         ObservableList<Usuario> listaUsuarios = FXCollections.observableArrayList();
-
-        // Crear datos para el gráfico
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Impacto Ambiental");
 
         for (Usuario usuario : usuarios) {
             if (usuario.getHuellas() != null) {
-                // Calcular impacto total
                 BigDecimal impactoTotal = calcularImpactoTotal(usuario);
-
-                // Agregar usuario a la lista con su impacto
                 usuario.setImpactoTotal(impactoTotal);
                 listaUsuarios.add(usuario);
-
-                // Agregar datos al gráfico
-                series.getData().add(new XYChart.Data<>(usuario.getNombre(), impactoTotal));
             }
         }
 
-        // Cargar datos en la tabla
         tablaImpacto.setItems(listaUsuarios);
-
-        // Cargar datos en el gráfico
-        graficoImpacto.getData().clear();
-        graficoImpacto.getData().add(series);
     }
 
     private BigDecimal calcularImpactoTotal(Usuario usuario) {
@@ -91,8 +69,32 @@ public class ComparacionImpactoController extends Controller implements Initiali
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public void actualizarDatos() {
-        cargarImpactoUsuarios();
+    private void configurarSeleccionTabla() {
+        tablaImpacto.setOnMouseClicked(event -> {
+            Usuario usuarioSeleccionado = tablaImpacto.getSelectionModel().getSelectedItem();
+            if (usuarioSeleccionado != null) {
+                if (usuariosSeleccionados.contains(usuarioSeleccionado)) {
+                    usuariosSeleccionados.remove(usuarioSeleccionado);
+                } else {
+                    if (usuariosSeleccionados.size() < 4) {
+                        usuariosSeleccionados.add(usuarioSeleccionado);
+                    }
+                }
+                actualizarGrafico();
+            }
+        });
+    }
+
+    private void actualizarGrafico() {
+        graficoImpacto.getData().clear();
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Impacto Ambiental");
+
+        for (Usuario usuario : usuariosSeleccionados) {
+            series.getData().add(new XYChart.Data<>(usuario.getNombre(), usuario.getImpactoTotal()));
+        }
+
+        graficoImpacto.getData().add(series);
     }
 
     public void goBack() throws IOException {
@@ -100,12 +102,8 @@ public class ComparacionImpactoController extends Controller implements Initiali
     }
 
     @Override
-    public void onOpen(Object input) throws IOException {
-
-    }
+    public void onOpen(Object input) throws IOException {}
 
     @Override
-    public void onClose(Object output) {
-
-    }
+    public void onClose(Object output) {}
 }
