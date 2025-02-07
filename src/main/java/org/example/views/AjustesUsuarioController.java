@@ -56,13 +56,42 @@ public class AjustesUsuarioController extends Controller implements Initializabl
             cambiosRealizados = true;
         }
 
-        // Si hay cambios, actualizar el usuario con la posible nueva contraseña
-        if (cambiosRealizados || !nuevaContraseña.isEmpty()) {
+        if (emailText.getText().isEmpty() || nameText.getText().isEmpty()) {
+            JavaFXUtils.showErrorAlert("ERROR AL GUARDAR CAMBIOS", "El nombre y el email no pueden estar en blanco");
+            return;
+        }
+
+        // Validación de correo electrónico
+        if (!JavaFXUtils.validateEmail(nuevoEmail)) {
+            JavaFXUtils.showErrorAlert("ERROR AL GUARDAR CAMBIOS", "El email no es válido");
+            return;
+        }
+
+        // Verificar si la contraseña no excede los 16 caracteres y si no es igual a la actual
+        if (!nuevaContraseña.isEmpty()) {
+            if (nuevaContraseña.length() > 16) {
+                JavaFXUtils.showErrorAlert("ERROR AL GUARDAR CAMBIOS", "La contraseña no puede tener más de 16 caracteres.");
+                return;
+            }
+
+            if (JavaFXUtils.hashPassword(nuevaContraseña).equals(usuario.getContraseña())) {
+                JavaFXUtils.showErrorAlert("ERROR AL GUARDAR CAMBIOS", "La nueva contraseña no puede ser igual a la actual.");
+                return;
+            }
+
+            // Si la contraseña es válida, actualizamos la contraseña del usuario
+            usuario.setContraseña(JavaFXUtils.hashPassword(nuevaContraseña));
+            cambiosRealizados = true;
+        }
+
+        // Si hay cambios, actualizamos el usuario
+        if (cambiosRealizados) {
             if (usuarioService.updateUser(usuario, nuevaContraseña)) {
                 JavaFXUtils.showInfoAlert("ÉXITO", "Los cambios se han guardado correctamente.");
             }
         }
     }
+
 
     @FXML
     public void eliminarUsuario() throws IOException {
