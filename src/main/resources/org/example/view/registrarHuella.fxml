@@ -3,30 +3,27 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="900.0" stylesheets="@../styles/registrarHuellaStyle.css"
-            xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.views.registrarHuellaController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/registrarHuellaStyle.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.views.registrarHuellaController">
 
     <center>
         <AnchorPane prefHeight="600.0" prefWidth="900.0">
-            <VBox alignment="CENTER" layoutX="300.0" layoutY="88.0" prefWidth="300.0" spacing="20.0">
+            <VBox alignment="CENTER" layoutX="300.0" layoutY="90.0" prefWidth="300.0" spacing="20.0">
 
-                <Label text="Actividad:"/>
-                <ChoiceBox fx:id="choiceBoxActividades" prefWidth="250.0"/>
+                <Label text="Actividad:" />
+                <ChoiceBox fx:id="choiceBoxActividades" prefWidth="250.0" />
 
-                <Label text="Valor:"/>
-                <TextField fx:id="valorText" prefWidth="250.0" promptText="Ingrese el valor"/>
+                <Label text="Valor:" />
+                <TextField fx:id="valorText" prefWidth="250.0" promptText="Ingrese el valor" />
 
-                <Label text="Unidad:"/>
-                <TextField fx:id="unidadText" prefWidth="250.0" promptText="Seleccione actividad para asignar unidad"/>
+                <Label text="Unidad:" />
+                <TextField fx:id="unidadText" editable="false" prefWidth="250.0" promptText="Seleccione actividad para asignar unidad" />
 
-                <Label text="Fecha:"/>
-                <DatePicker fx:id="datePicker" prefWidth="250.0"/>
+                <Label text="Fecha:" />
+                <DatePicker fx:id="datePicker" prefWidth="250.0" />
 
                 <HBox alignment="CENTER" spacing="15.0">
-                    <Button fx:id="btnSave" onAction="#Save" text="Guardar"/>
-                    <Button id="btnBack" fx:id="btnClose" onAction="#goBack" text="Volver"/>
+                    <Button fx:id="btnSave" onAction="#Save" text="Guardar" />
+                    <Button id="btnBack" fx:id="btnClose" onAction="#goBack" text="Volver" />
                 </HBox>
             </VBox>
         </AnchorPane>

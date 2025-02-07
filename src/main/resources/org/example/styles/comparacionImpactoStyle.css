@@ -29,22 +29,6 @@
     -fx-font-size: 12px;
 }
 
-.button {
-    -fx-background-color: #4CAF50;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 8px 15px;
-    -fx-border-radius: 5px;
-}
-
-.button:hover {
-    -fx-background-color: #45a049;
-}
-
-.button:pressed {
-    -fx-background-color: #3e8e41;
-}
-
 .hbox {
     -fx-spacing: 15px;
 }
@@ -52,4 +36,33 @@
 .vbox {
     -fx-alignment: center;
     -fx-spacing: 20px;
+}
+
+Button {
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Efecto hover */
+Button:hover {
+    -fx-background-color: #005A9E;
+}
+
+/* Efecto al presionar */
+Button:pressed {
+    -fx-background-color: #003E73;
+}
+
+/* Estilo especial para el botón de volver */
+#btnBack {
+    -fx-background-color: #6c757d;
+}
+
+#btnBack:hover {
+    -fx-background-color: #5a6268;
 }

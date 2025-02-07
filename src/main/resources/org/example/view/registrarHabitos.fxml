@@ -7,7 +7,7 @@
 
     <center>
         <AnchorPane prefHeight="600.0" prefWidth="900.0">
-            <VBox alignment="CENTER" layoutX="300.0" layoutY="88.0" prefWidth="300.0" spacing="20.0">
+            <VBox alignment="CENTER" layoutX="300.0" layoutY="82.0" prefWidth="300.0" spacing="20.0">
 
                 <Label text="Actividad:" />
                 <ChoiceBox fx:id="choiceBoxActividades" prefWidth="250.0" />
