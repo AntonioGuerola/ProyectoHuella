@@ -2,8 +2,7 @@ package org.example.model.entities;
 
 import jakarta.persistence.*;
 
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "habito", schema = "eco")
@@ -17,7 +16,7 @@ public class Habito {
     private Usuario idUsuario;
 
     @MapsId("idActividad")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_actividad", nullable = false)
     private Actividad idActividad;
 
@@ -29,9 +28,9 @@ public class Habito {
     private Tipo tipo;
 
     @Column(name = "ultima_fecha")
-    private Instant ultimaFecha;
+    private LocalDate ultimaFecha;
 
-    public Habito(Usuario idUsuario, Actividad idActividad, int frecuencia, Tipo tipo, Instant ultimaFecha) {
+    public Habito(Usuario idUsuario, Actividad idActividad, int frecuencia, Tipo tipo, LocalDate ultimaFecha) {
         this.id = new HabitoId(idUsuario.getId(), idActividad.getId());
         this.idUsuario = idUsuario;
         this.idActividad = idActividad;
@@ -83,11 +82,11 @@ public class Habito {
         this.tipo = tipo != null ? Tipo.valueOf(tipo) : null;
     }
 
-    public Instant getUltimaFecha() {
+    public LocalDate getUltimaFecha() {
         return ultimaFecha;
     }
 
-    public void setUltimaFecha(Instant ultimaFecha) {
+    public void setUltimaFecha(LocalDate ultimaFecha) {
         this.ultimaFecha = ultimaFecha;
     }
 

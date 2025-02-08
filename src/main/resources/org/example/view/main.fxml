@@ -13,6 +13,7 @@
                 <Button fx:id="btnRegistrarHuella" onAction="#goRegistrarHuella" text="Registrar Huella"/>
                 <Button fx:id="btnRegistrarHabito" onAction="#goRegistrarHabito" text="Registrar Hábito"/>
                 <Button fx:id="btnConsultarHuellas" onAction="#goConsultarHuellas" text="Consultar Huellas"/>
+                <Button fx:id="btnConsultarHabitos" onAction="#goConsultarHabitos" text="Consultar Hábitos"/>
                 <Button fx:id="btnRecomendaciones" onAction="#goRecomendaciones" text="Recomendaciones"/>
                 <Button fx:id="btnComparacionImpacto" onAction="#goComparacionImpacto"
                         text="Comparación de Impacto Total"/>

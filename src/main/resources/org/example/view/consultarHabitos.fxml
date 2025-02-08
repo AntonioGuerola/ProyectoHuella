@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/HuellaseImpactoStyle.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.views.consultarHabitosController">
+
+    <center>
+        <AnchorPane prefHeight="600.0" prefWidth="900.0">
+            <VBox alignment="CENTER" layoutX="100.0" layoutY="56.0" prefHeight="487.0" prefWidth="700.0" spacing="20.0">
+
+                <TableView fx:id="tablaHabitos" prefHeight="400.0" prefWidth="600.0">
+                    <columns>
+                        <TableColumn fx:id="columnaActividad" prefWidth="250.0" text="Actividad" />
+                        <TableColumn fx:id="columnaFrecuencia" prefWidth="100.0" text="Frecuencia" />
+                        <TableColumn fx:id="columnaTipo" prefWidth="100.0" text="Tipo" />
+                        <TableColumn fx:id="columnaUltimaFecha" prefWidth="150.0" text="Última Fecha" />
+                    </columns>
+                </TableView>
+
+                <Label fx:id="infoLabel" style="-fx-font-size: 9px; -fx-text-fill: #2a2a2a; -fx-font-weight: bold;" text="Selecciona un hábito si quieres eliminarlo" />
+
+                <HBox alignment="CENTER" spacing="15.0">
+                    <Button fx:id="btnEliminar" onAction="#eliminarHabito" text="Eliminar Hábito" />
+                    <Button fx:id="btnBack" onAction="#goBack" text="Volver" />
+                </HBox>
+            </VBox>
+        </AnchorPane>
+    </center>
+
+</BorderPane>

@@ -1,8 +1,10 @@
 package org.example.model.service;
 
 import org.example.model.dao.HabitoDAO;
+import org.example.model.dao.HuellaDAO;
 import org.example.model.entities.Habito;
 import org.example.model.entities.HabitoId;
+import org.example.model.entities.Huella;
 import org.example.model.utils.JavaFXUtils;
 import java.util.List;
 
@@ -38,11 +40,19 @@ public class HabitoService {
         }
     }
 
-    public void deleteHabito(Habito habito) {
+    public boolean deleteHabito(Habito habito) {
+        if (habito == null || habito.getId() == null) {
+            JavaFXUtils.showErrorAlert("ERROR AL ELIMINAR HÁBITO", "El hábito es inválida.");
+            return false;
+        }
+
         try {
             HabitoDAO.buildHabitoDAO().deleteHabito(habito);
+            return true;
         } catch (Exception e) {
+            JavaFXUtils.showErrorAlert("ERROR AL ELIMINAR HÁBITO", "Ocurrió un error al eliminar el hábito.");
             e.printStackTrace();
+            return false;
         }
     }
 

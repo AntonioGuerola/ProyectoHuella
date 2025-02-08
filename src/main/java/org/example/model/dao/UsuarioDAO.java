@@ -12,6 +12,7 @@ public class UsuarioDAO {
     private final static String FINDUSERBYID = "FROM Usuario WHERE id = :id";
     private final static String FINDUSERBYEMAIL = "FROM Usuario WHERE email = :email";
     private final static String FINDHUELLASDEUSUARIO = "SELECT u FROM Usuario u LEFT JOIN FETCH u.huellas WHERE u.id = :userId";
+    private final static String FINDHABITOSDEUSUARIO = "SELECT u FROM Usuario u LEFT JOIN FETCH u.habitos WHERE u.id = :userId";
 
     public void insertUsuario(Usuario user) {
         Session session = Connect.getInstance().getSession();
@@ -78,6 +79,15 @@ public class UsuarioDAO {
         List<Usuario> users = (List<Usuario>) ((org.hibernate.query.Query<?>) query).list();
         session.close();
         return users;
+    }
+
+    public Usuario getUsuarioConHabitos(Integer userId) {
+        Session session = Connect.getInstance().getSession();
+        Query query = session.createQuery(FINDHABITOSDEUSUARIO);
+        query.setParameter("userId", userId);
+        Usuario user = (Usuario) query.getSingleResult();
+        session.close();
+        return user;
     }
 
 }
