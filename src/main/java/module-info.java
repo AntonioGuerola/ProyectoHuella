@@ -6,6 +6,8 @@ module org.example {
     requires org.hibernate.orm.core;
     requires java.desktop;
     requires java.xml.bind;
+    requires layout;
+    requires kernel;
 
     opens org.example.views to javafx.fxml;
     exports org.example;
