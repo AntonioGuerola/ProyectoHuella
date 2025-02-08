@@ -14,6 +14,7 @@
                 <Button fx:id="btnConsultarHabitos" onAction="#goConsultarHabitos" text="Consultar Hábitos" />
                 <Button fx:id="btnRecomendaciones" onAction="#goRecomendaciones" text="Recomendaciones" />
                 <Button fx:id="btnComparacionImpacto" onAction="#goComparacionImpacto" text="Comparación de Impacto Total" />
+                <Button fx:id="btnPDF" onAction="#generarPDF" text="Generar PDF" />
                 <Button fx:id="btnAjustes" onAction="#goAjustes" text="Ajustes de Usuario" />
                 <Button fx:id="btnClose" onAction="#goBack" text="Cerrar Sesión" />
             </VBox>
