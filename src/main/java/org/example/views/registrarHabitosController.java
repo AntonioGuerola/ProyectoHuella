@@ -19,7 +19,6 @@ import org.example.model.utils.JavaFXUtils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -49,7 +48,6 @@ public class registrarHabitosController extends Controller implements Initializa
     public void onOpen(Object input) throws IOException {
         List<Actividad> actividades = ActividadService.buildActividadService().getAllActividades();
 
-        // Limpiar y añadir las actividades al ChoiceBox
         choiceBoxActividades.getItems().clear();
         for (Actividad actividad : actividades) {
             choiceBoxActividades.getItems().add(actividad.getNombre());
@@ -68,10 +66,9 @@ public class registrarHabitosController extends Controller implements Initializa
                     public void updateItem(LocalDate item, boolean empty) {
                         super.updateItem(item, empty);
 
-                        // Deshabilitar los días posteriores a la fecha actual
                         if (item.isAfter(LocalDate.now())) {
                             setDisable(true);
-                            setStyle("-fx-background-color: #ffc0cb;"); // Color para los días deshabilitados
+                            setStyle("-fx-background-color: #ffc0cb;");
                         }
                     }
                 };
@@ -109,12 +106,9 @@ public class registrarHabitosController extends Controller implements Initializa
             Tipo tipo = choiceBoxTipo.getValue();
 
             LocalDate fechaSeleccionada = datePicker.getValue();
-            LocalDate ultimaFecha = LocalDate.from(fechaSeleccionada.atStartOfDay().toInstant(java.time.ZoneOffset.UTC));
 
-            // Crear un nuevo Habito
-            Habito habito = new Habito(userLoggedIn, actividad, frecuencia, tipo, ultimaFecha);
+            Habito habito = new Habito(userLoggedIn, actividad, frecuencia, tipo, fechaSeleccionada);
 
-            // Guardar el Habito usando Hibernate
             HabitoService.buildHabitoService().createHabito(habito);
 
             JavaFXUtils.showInfoAlert("ÉXITO", "Hábito registrado correctamente.");

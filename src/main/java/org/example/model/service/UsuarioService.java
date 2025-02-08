@@ -30,27 +30,8 @@ public class UsuarioService {
     }
 
     public boolean updateUser(Usuario user, String nuevaContraseña) {
-        try {
-            // Verifica si la contraseña ha cambiado
-            if (nuevaContraseña != null && !nuevaContraseña.isEmpty()) {
-                if (nuevaContraseña.length() > 16) {
-                    JavaFXUtils.showErrorAlert("ERROR", "La contraseña no puede tener más de 16 caracteres.");
-                    return false;
-                }
-                if (JavaFXUtils.hashPassword(nuevaContraseña).equals(user.getContraseña())) {
-                    JavaFXUtils.showErrorAlert("ERROR", "La nueva contraseña no puede ser igual a la actual.");
-                    return false;
-                }
-                // Si la contraseña cambia, se hashea
-                user.setContraseña(JavaFXUtils.hashPassword(nuevaContraseña));
-            }
-
-            usuarioDAO.updateUsuario(user);
-            return true;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return false;
+        usuarioDAO.updateUsuario(user);
+        return true;
     }
 
     public void deleteUser(Usuario user) {
@@ -75,7 +56,7 @@ public class UsuarioService {
         try {
             return usuarioDAO.findUserByEmail(email);
         } catch (jakarta.persistence.NoResultException e) {
-            return null; // Manejamos la excepción aquí devolviendo null si no se encuentra el usuario
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

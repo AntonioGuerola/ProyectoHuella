@@ -100,8 +100,8 @@ public class consultarHabitosController extends Controller implements Initializa
 
             if (eliminado) {
                 JavaFXUtils.showInfoAlert("Éxito", "El hábito ha sido eliminado correctamente.");
-                cargarHabitosUsuario(); // Recargar la tabla después de eliminar
-                tablaHabitos.getSelectionModel().clearSelection(); // Limpiar selección para evitar errores
+                cargarHabitosUsuario();
+                tablaHabitos.getSelectionModel().clearSelection();
             } else {
                 JavaFXUtils.showErrorAlert("Error", "No se pudo eliminar el hábito.");
             }

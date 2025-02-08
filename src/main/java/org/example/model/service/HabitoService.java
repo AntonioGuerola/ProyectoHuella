@@ -76,7 +76,7 @@ public class HabitoService {
         try {
             return HabitoDAO.buildHabitoDAO().findById(id);
         } catch (jakarta.persistence.NoResultException e) {
-            return null; // Si no se encuentra el hábito, devolvemos null
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

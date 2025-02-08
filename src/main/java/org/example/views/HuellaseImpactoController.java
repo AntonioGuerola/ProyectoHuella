@@ -77,7 +77,6 @@ public class HuellaseImpactoController extends Controller implements Initializab
                 ObservableList<Huella> huellas = FXCollections.observableArrayList(usuarioConHuellas.getHuellas());
                 tablaHuellas.setItems(huellas);
 
-                // Calcular impacto total
                 BigDecimal impactoTotal = calcularImpactoTotal(usuarioConHuellas.getHuellas());
                 impactoTotalLabel.setText("Impacto total: " + impactoTotal + " kg CO₂");
             }
@@ -115,8 +114,8 @@ public class HuellaseImpactoController extends Controller implements Initializab
 
             if (eliminado) {
                 JavaFXUtils.showInfoAlert("Éxito", "La huella ha sido eliminada correctamente.");
-                cargarHuellasUsuario(); // Recargar la tabla después de eliminar
-                tablaHuellas.getSelectionModel().clearSelection(); // Limpiar selección para evitar errores
+                cargarHuellasUsuario();
+                tablaHuellas.getSelectionModel().clearSelection();
             } else {
                 JavaFXUtils.showErrorAlert("Error", "No se pudo eliminar la huella.");
             }

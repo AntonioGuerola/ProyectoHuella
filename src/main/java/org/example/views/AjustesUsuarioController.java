@@ -139,8 +139,6 @@ public class AjustesUsuarioController extends Controller implements Initializabl
         }
     }
 
-
-
     @FXML
     public void goBack() throws IOException {
         App.currentController.changeScene(Scenes.MENUPRINCIPAL, null);

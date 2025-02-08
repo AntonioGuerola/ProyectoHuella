@@ -19,7 +19,6 @@ import org.example.model.utils.JavaFXUtils;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -53,52 +52,42 @@ public class registrarHuellaController extends Controller implements Initializab
             choiceBoxActividades.getItems().add(actividad.getNombre());
         }
 
-        // Añadir listener para cuando se seleccione una actividad
         choiceBoxActividades.setOnAction(e -> actualizarUnidadPorCategoria());
     }
 
     private void actualizarUnidadPorCategoria() {
-        // Obtener la actividad seleccionada
         String actividadSeleccionada = choiceBoxActividades.getValue();
 
-        // Buscar la actividad en la base de datos
         Actividad actividad = ActividadService.buildActividadService().getActividadByName(actividadSeleccionada);
         if (actividad != null) {
-            // Obtener la categoría de la actividad
-            int categoria = actividad.getIdCategoria().getId();  // Asegúrate de que la actividad tiene el atributo categoría
+            int categoria = actividad.getIdCategoria().getId();
 
-            // Dependiendo de la categoría, asignar la unidad adecuada
             switch (categoria) {
                 case 1:
-                    // Si la categoría es 1, la unidad es "Km"
-                    unidadText.setVisible(false);  // Ocultar el ChoiceBox
-                    unidadText.setVisible(true);          // Mostrar el TextField
+                    unidadText.setVisible(false);
+                    unidadText.setVisible(true);
                     unidadText.setText("Km");
                     break;
                 case 2:
-                    // Si la categoría es 2, la unidad es "KWh"
                     unidadText.setVisible(false);
                     unidadText.setVisible(true);
                     unidadText.setText("KWh");
                     break;
                 case 3:
                 case 4:
-                    // Si la categoría es 3 o 4, la unidad es "Kg"
                     unidadText.setVisible(false);
                     unidadText.setVisible(true);
                     unidadText.setText("Kg");
                     break;
                 case 5:
-                    // Si la categoría es 5, la unidad es "m³"
                     unidadText.setVisible(false);
                     unidadText.setVisible(true);
                     unidadText.setText("m³");
                     break;
                 default:
-                    // Si no se cumple ninguna de las anteriores, mostrar el ChoiceBox
                     unidadText.setVisible(true);
                     unidadText.setVisible(false);
-                    unidadText.clear();  // Limpiar las unidades anteriores
+                    unidadText.clear();
                     break;
             }
         }
@@ -111,10 +100,9 @@ public class registrarHuellaController extends Controller implements Initializab
                     public void updateItem(LocalDate item, boolean empty) {
                         super.updateItem(item, empty);
 
-                        // Deshabilitar los días posteriores a la fecha actual
                         if (item.isAfter(LocalDate.now())) {
                             setDisable(true);
-                            setStyle("-fx-background-color: #ffc0cb;"); // Color para los días deshabilitados
+                            setStyle("-fx-background-color: #ffc0cb;");
                         }
                     }
                 };
@@ -128,18 +116,15 @@ public class registrarHuellaController extends Controller implements Initializab
     }
 
     public boolean Save() {
-        // Validar si todos los campos son válidos
         if (choiceBoxActividades.getValue() == null || valorText.getText().isEmpty() || valorText.getText().isEmpty() || datePicker.getValue() == null) {
             JavaFXUtils.showErrorAlert("ERROR AL REGISTRAR HUELLA", "Todos los campos son obligatorios.");
             return false;
         }
 
         try {
-            // Obtener los valores seleccionados
             String actividadSeleccionada = choiceBoxActividades.getValue();
-            String unidadSeleccionada = unidadText.getText();  // El valor de unidad será del TextField
+            String unidadSeleccionada = unidadText.getText();
 
-            // Validar el valor ingresado (por ejemplo, asegurarse de que sea un número)
             BigDecimal valor;
             try {
                 valor = new BigDecimal(valorText.getText());
@@ -152,11 +137,8 @@ public class registrarHuellaController extends Controller implements Initializab
                 return false;
             }
 
-            // Obtener la fecha seleccionada
             LocalDate fechaSeleccionada = datePicker.getValue();
-            Instant fechaInstant = fechaSeleccionada.atStartOfDay().toInstant(java.time.ZoneOffset.UTC);
 
-            // Crear la Huella (asegúrate de que la clase Huella esté definida correctamente)
             Actividad actividad = ActividadService.buildActividadService().getActividadByName(actividadSeleccionada);
             if (actividad == null) {
                 JavaFXUtils.showErrorAlert("ERROR AL REGISTRAR HUELLA", "No se encontró la actividad seleccionada.");
