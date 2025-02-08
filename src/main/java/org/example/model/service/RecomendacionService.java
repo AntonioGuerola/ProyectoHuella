@@ -12,7 +12,7 @@ public class RecomendacionService {
         try {
             return recomendacionDAO.findById(id);
         } catch (jakarta.persistence.NoResultException e) {
-            return null; // Si no se encuentra la recomendación, devuelve null
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

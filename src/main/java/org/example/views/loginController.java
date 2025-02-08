@@ -24,24 +24,23 @@ public class loginController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Any initialization if needed
+
     }
 
     @Override
     public void onOpen(Object input) throws IOException {
-        // Handle opening logic if necessary
+
     }
 
     @Override
     public void onClose(Object output) {
-        // Handle closing logic if necessary
+
     }
 
     @FXML
     public boolean login() throws NoSuchAlgorithmException, IOException {
         boolean result = false;
 
-        // Validating input fields
         if (emailText.getText().isEmpty() || passwordText.getText().isEmpty()) {
             JavaFXUtils.showErrorAlert("ERROR AL INICIAR SESIÓN", "Los campos de email y contraseña no pueden estar vacíos");
             return false;
@@ -50,14 +49,12 @@ public class loginController extends Controller implements Initializable {
         String email = emailText.getText();
         String passwordHash = JavaFXUtils.hashPassword(passwordText.getText());
 
-        // Searching for the user
         Usuario userFromDatabase = UsuarioService.buildUsuarioService().getUserByEmail(email);
 
         if (userFromDatabase != null && userFromDatabase.getContraseña().equals(passwordHash)) {
             userSingleton.initialize(userFromDatabase);
             System.out.println("Logueado correctamente");
 
-            // Changing scene to main menu
             App.currentController.changeScene(Scenes.MENUPRINCIPAL, null);
             result = true;
         } else {

@@ -61,7 +61,7 @@ public class HuellaService {
         }
 
         try {
-            HuellaDAO.buildHuellaDAO().deleteAllHuellasByUsuario(usuario);  // Pasamos el objeto usuario aquí
+            HuellaDAO.buildHuellaDAO().deleteAllHuellasByUsuario(usuario);
             return true;
         } catch (Exception e) {
             JavaFXUtils.showErrorAlert("ERROR AL ELIMINAR HUELLAS", "Ocurrió un error al intentar eliminar las huellas.");
@@ -74,7 +74,7 @@ public class HuellaService {
         try {
             return HuellaDAO.buildHuellaDAO().findById(id);
         } catch (jakarta.persistence.NoResultException e) {
-            return null; // Si no se encuentra la huella, devolvemos null
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -42,7 +42,7 @@ public class HabitoDAO {
         session.beginTransaction();
         Query query = session.createQuery(DELETE_ALL_BY_USUARIO);
         query.setParameter("idUsuario", idUsuario);
-        query.executeUpdate();  // Ejecutamos el DELETE
+        query.executeUpdate();
         session.getTransaction().commit();
         session.close();
     }

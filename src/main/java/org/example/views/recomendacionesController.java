@@ -79,11 +79,9 @@ public class recomendacionesController extends Controller implements Initializab
 
     private void mostrarRecomendacion(Huella huella) {
         try {
-            // Obtener la categoría desde la actividad asociada a la huella
             if (huella.getIdActividad() != null && huella.getIdActividad().getIdCategoria() != null) {
                 Integer categoriaId = huella.getIdActividad().getIdCategoria().getId();
 
-                // Buscar recomendaciones basadas en la categoría obtenida
                 List<Recomendacion> recomendaciones = RecomendacionService.buildRecomendacionService().getRecomendacionesByCategoria(categoriaId);
 
                 if (!recomendaciones.isEmpty()) {

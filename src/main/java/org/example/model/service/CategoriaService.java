@@ -10,7 +10,7 @@ public class CategoriaService {
         try {
             return CategoriaDAO.buildCategoriaDAO().findById(id);
         } catch (jakarta.persistence.NoResultException e) {
-            return null; // Si no se encuentra la categoría, devuelve null
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

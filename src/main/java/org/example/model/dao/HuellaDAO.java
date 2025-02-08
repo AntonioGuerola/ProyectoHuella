@@ -42,8 +42,8 @@ public class HuellaDAO {
         Session session = Connect.getInstance().getSession();
         session.beginTransaction();
         Query query = session.createQuery(DELETE_ALL_BY_USUARIO);
-        query.setParameter("idUsuario", usuario);  // Cambié a pasar el objeto Usuario completo
-        query.executeUpdate();  // Ejecutamos el DELETE
+        query.setParameter("idUsuario", usuario);
+        query.executeUpdate();
         session.getTransaction().commit();
         session.close();
     }

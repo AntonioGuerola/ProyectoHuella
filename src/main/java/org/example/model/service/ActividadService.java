@@ -12,7 +12,7 @@ public class ActividadService {
         try {
             return actividadDAO.findById(id);
         } catch (jakarta.persistence.NoResultException e) {
-            return null; // Si no se encuentra la actividad, devuelve null
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

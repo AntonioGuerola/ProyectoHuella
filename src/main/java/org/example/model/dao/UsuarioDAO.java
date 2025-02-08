@@ -52,7 +52,7 @@ public class UsuarioDAO {
         Query query = session.createQuery(FINDUSERBYEMAIL);
         query.setParameter("email", email);
 
-        Usuario user = (Usuario) query.getSingleResult(); // Permitimos que lance la excepción
+        Usuario user = (Usuario) query.getSingleResult();
         session.close();
         return user;
     }

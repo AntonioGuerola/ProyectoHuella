@@ -45,7 +45,7 @@ public class ComparacionImpactoController extends Controller implements Initiali
         columnaUsuario.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         columnaImpacto.setCellValueFactory(param -> {
             Usuario usuario = param.getValue();
-            BigDecimal impactoTotal = calcularImpactoTotal(usuario);  // Calculamos el impacto total aquí
+            BigDecimal impactoTotal = calcularImpactoTotal(usuario);
             return new javafx.beans.property.SimpleObjectProperty<>(impactoTotal);
         });    }
 
@@ -55,8 +55,6 @@ public class ComparacionImpactoController extends Controller implements Initiali
 
         for (Usuario usuario : usuarios) {
             if (usuario.getHuellas() != null) {
-                BigDecimal impactoTotal = calcularImpactoTotal(usuario);
-                // Mostrar el impacto directamente en la tabla, sin necesidad de almacenarlo en la entidad
                 listaUsuarios.add(usuario);
             }
         }
