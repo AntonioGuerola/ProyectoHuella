@@ -109,7 +109,7 @@ public class registrarHabitosController extends Controller implements Initializa
             Tipo tipo = choiceBoxTipo.getValue();
 
             LocalDate fechaSeleccionada = datePicker.getValue();
-            Instant ultimaFecha = fechaSeleccionada.atStartOfDay().toInstant(java.time.ZoneOffset.UTC);
+            LocalDate ultimaFecha = LocalDate.from(fechaSeleccionada.atStartOfDay().toInstant(java.time.ZoneOffset.UTC));
 
             // Crear un nuevo Habito
             Habito habito = new Habito(userLoggedIn, actividad, frecuencia, tipo, ultimaFecha);

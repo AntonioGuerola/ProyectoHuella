@@ -109,6 +109,15 @@ public class UsuarioService {
         }
     }
 
+    public Usuario getUserWithHabits(Integer userId) {
+        try {
+            return usuarioDAO.getUsuarioConHabitos(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static UsuarioService buildUsuarioService() {
         return new UsuarioService();
     }

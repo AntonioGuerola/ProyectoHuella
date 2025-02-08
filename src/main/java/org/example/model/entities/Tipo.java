@@ -7,10 +7,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public enum Tipo implements Serializable {
-    DIARIA("diaria"),
-    SEMANAL("semanal"),
-    MENSUAL("mensual"),
-    ANUAL("anual");
+    diaria("diaria"),
+    semanal("semanal"),
+    mensual("mensual"),
+    anual("anual");
 
     private final String dbField;
 

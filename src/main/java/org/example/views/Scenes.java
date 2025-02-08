@@ -11,7 +11,8 @@ public enum Scenes {
     RECOMENDACIONES("view/recomendaciones.fxml"),
     AJUSTES("view/ajustesUsuario.fxml"),
     COMPARACIONIMPACTO("view/comparacionImpacto.fxml"),
-    CONSULTARHUELLAS("view/HuellaseImpacto.fxml");
+    CONSULTARHUELLAS("view/HuellaseImpacto.fxml"),
+    CONSULTARHABITOS("view/consultarHabitos.fxml");
 
     private String url;
 

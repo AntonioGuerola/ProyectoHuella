@@ -30,6 +30,10 @@ public class mainController extends Controller implements Initializable {
         App.currentController.changeScene(Scenes.CONSULTARHUELLAS, null);
     }
 
+    public void goConsultarHabitos() throws IOException {
+        App.currentController.changeScene(Scenes.CONSULTARHABITOS, null);
+    }
+
     public void goRecomendaciones() throws IOException {
         App.currentController.changeScene(Scenes.RECOMENDACIONES, null);
     }
