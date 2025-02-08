@@ -102,16 +102,6 @@ public class Usuario {
         this.huellas = huellas;
     }
 
-    private BigDecimal impactoTotal;
-
-    public BigDecimal getImpactoTotal() {
-        return impactoTotal;
-    }
-
-    public void setImpactoTotal(BigDecimal impactoTotal) {
-        this.impactoTotal = impactoTotal;
-    }
-
     @Override
     public String toString() {
         return "Usuario{" +

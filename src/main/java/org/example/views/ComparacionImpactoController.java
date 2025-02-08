@@ -43,8 +43,11 @@ public class ComparacionImpactoController extends Controller implements Initiali
 
     private void configurarColumnasTabla() {
         columnaUsuario.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        columnaImpacto.setCellValueFactory(new PropertyValueFactory<>("impactoTotal"));
-    }
+        columnaImpacto.setCellValueFactory(param -> {
+            Usuario usuario = param.getValue();
+            BigDecimal impactoTotal = calcularImpactoTotal(usuario);  // Calculamos el impacto total aquí
+            return new javafx.beans.property.SimpleObjectProperty<>(impactoTotal);
+        });    }
 
     private void cargarImpactoUsuarios() {
         List<Usuario> usuarios = UsuarioService.buildUsuarioService().getAllUsersWithFootprints();
@@ -53,7 +56,7 @@ public class ComparacionImpactoController extends Controller implements Initiali
         for (Usuario usuario : usuarios) {
             if (usuario.getHuellas() != null) {
                 BigDecimal impactoTotal = calcularImpactoTotal(usuario);
-                usuario.setImpactoTotal(impactoTotal);
+                // Mostrar el impacto directamente en la tabla, sin necesidad de almacenarlo en la entidad
                 listaUsuarios.add(usuario);
             }
         }
@@ -89,7 +92,8 @@ public class ComparacionImpactoController extends Controller implements Initiali
         series.setName("Impacto Ambiental");
 
         for (Usuario usuario : usuariosSeleccionados) {
-            series.getData().add(new XYChart.Data<>(usuario.getNombre(), usuario.getImpactoTotal()));
+            BigDecimal impactoTotal = calcularImpactoTotal(usuario);
+            series.getData().add(new XYChart.Data<>(usuario.getNombre(), impactoTotal));
         }
 
         graficoImpacto.getData().add(series);
