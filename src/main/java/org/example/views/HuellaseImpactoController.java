@@ -4,15 +4,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.App;
 import org.example.model.entities.Huella;
 import org.example.model.entities.Usuario;
+import org.example.model.service.HuellaService;
 import org.example.model.service.UsuarioService;
 import org.example.model.singleton.userSingleton;
+import org.example.model.utils.JavaFXUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 
 public class HuellaseImpactoController extends Controller implements Initializable {
     private Usuario userLoggedIn;
+    private final HuellaService huellaService = HuellaService.buildHuellaService();
 
     @FXML
     private TableView<Huella> tablaHuellas;
@@ -44,6 +45,9 @@ public class HuellaseImpactoController extends Controller implements Initializab
     @FXML
     private Label impactoTotalLabel;
 
+    @FXML
+    private Button btnEliminar;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userLoggedIn = userSingleton.getInstance().getCurrentUser();
@@ -51,7 +55,10 @@ public class HuellaseImpactoController extends Controller implements Initializab
         if (userLoggedIn != null) {
             configurarColumnasTabla();
             cargarHuellasUsuario();
+            configurarSeleccionTabla();
         }
+
+        btnEliminar.setDisable(true);
     }
 
     private void configurarColumnasTabla() {
@@ -83,17 +90,46 @@ public class HuellaseImpactoController extends Controller implements Initializab
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    private void configurarSeleccionTabla() {
+        tablaHuellas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            btnEliminar.setDisable(newSelection == null);
+        });
+    }
+
+    @FXML
+    public void eliminarHuella() {
+        Huella huellaSeleccionada = tablaHuellas.getSelectionModel().getSelectedItem();
+
+        if (huellaSeleccionada == null) {
+            JavaFXUtils.showErrorAlert("Error", "Por favor, selecciona una huella para eliminar.");
+            return;
+        }
+
+        boolean confirmacion = JavaFXUtils.showConfirmationDialog(
+                "Confirmar eliminación",
+                "¿Estás seguro de que quieres eliminar esta huella? Esta acción no se puede deshacer."
+        );
+
+        if (confirmacion) {
+            boolean eliminado = huellaService.deleteHuella(huellaSeleccionada);
+
+            if (eliminado) {
+                JavaFXUtils.showInfoAlert("Éxito", "La huella ha sido eliminada correctamente.");
+                cargarHuellasUsuario(); // Recargar la tabla después de eliminar
+                tablaHuellas.getSelectionModel().clearSelection(); // Limpiar selección para evitar errores
+            } else {
+                JavaFXUtils.showErrorAlert("Error", "No se pudo eliminar la huella.");
+            }
+        }
+    }
+
     public void goBack() throws IOException {
         App.currentController.changeScene(Scenes.MENUPRINCIPAL, null);
     }
 
     @Override
-    public void onOpen(Object input) throws IOException {
-
-    }
+    public void onOpen(Object input) throws IOException {}
 
     @Override
-    public void onClose(Object output) {
-
-    }
+    public void onClose(Object output) {}
 }

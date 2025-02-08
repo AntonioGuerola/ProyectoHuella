@@ -38,11 +38,19 @@ public class HuellaService {
         }
     }
 
-    public void deleteHuella(Huella huella) {
+    public boolean deleteHuella(Huella huella) {
+        if (huella == null || huella.getId() == null) {
+            JavaFXUtils.showErrorAlert("ERROR AL ELIMINAR HUELLA", "La huella de carbono es inválida.");
+            return false;
+        }
+
         try {
             HuellaDAO.buildHuellaDAO().deleteHuella(huella);
+            return true;
         } catch (Exception e) {
+            JavaFXUtils.showErrorAlert("ERROR AL ELIMINAR HUELLA", "Ocurrió un error al eliminar la huella.");
             e.printStackTrace();
+            return false;
         }
     }
 
